@@ -8,7 +8,7 @@ type PropsType = {
   disabled?: boolean;
   loading?: boolean;
   label: string;
-  onPress: () => any;
+  onPress?: () => any;
   color?: string;
   textColor?: string;
 };

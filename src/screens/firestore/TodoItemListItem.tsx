@@ -6,6 +6,7 @@ import { ListItem, Switch } from "../../components";
 
 type PropsType = {
   todoItem: Document<TodoItem>;
+  editable?: boolean;
 };
 
 export default observer(
@@ -25,18 +26,19 @@ export default observer(
     };
 
     render() {
-      const { todoItem } = this.props;
+      const { todoItem, editable } = this.props;
       if (!todoItem) return null;
       const { text, finished } = todoItem.data;
       return (
         <ListItem
-          editable
-          label="Text"
-          value={text}
+          editable={editable}
+          label={editable ? "Text" : text}
+          value={editable ? text : undefined}
           onChangeValue={this.onChangeText}
           accessory={
             <Switch
               value={finished || false}
+              disabled={!editable}
               onValueChange={this.onChangeFinished}
             />
           }

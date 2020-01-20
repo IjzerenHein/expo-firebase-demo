@@ -1,5 +1,8 @@
 # expo-firebase-demo
 
+- [View as a website](https://expo-firebase-demo.web.app/)
+
+
 ## Firebase Deploy
 
 The following steps describe how to deploy the firebase cloud settings to your project.
@@ -30,6 +33,13 @@ When all prerequisites have been met, you can deploy the config using the follow
 ```
 $ firebase deploy
 ```
+
+- Deploy the built website
+```
+$ expo web:build
+$ firebase deploy --only hosting
+```
+
 
 - Deploy the Firestore rules only
 ```

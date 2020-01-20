@@ -62,6 +62,7 @@ export default observer(
       const { todoList, todoItems } = route.params;
       const { name, public: isPublic } = todoList.data;
       const { docs, isLoading } = todoItems;
+      const editable = !!currentUser;
       return (
         <ScrollView style={styles.container}>
           {currentUser ? (
@@ -88,11 +89,11 @@ export default observer(
           )}
           <ListSeparator label="Items" value="Finished" />
           {docs.map(doc => (
-            <TodoItemListItem key={doc.id} todoItem={doc} />
+            <TodoItemListItem key={doc.id} todoItem={doc} editable={editable} />
           ))}
           {isLoading ? (
             <ActivityIndicator style={styles.loader} />
-          ) : currentUser ? (
+          ) : editable ? (
             <Button
               style={styles.button}
               label="Add todo item"
