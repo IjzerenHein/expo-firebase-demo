@@ -1,11 +1,19 @@
 import * as React from "react";
-import { StyleSheet, View, Alert } from "react-native";
-import { Heading2, Margins, Button, Icon, Colors } from "../../components";
+import { StyleSheet, View, Alert, Dimensions, Platform } from "react-native";
+import {
+  Heading2,
+  Margins,
+  Button,
+  Icon,
+  Colors,
+  Rounding
+} from "../../components";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import * as Facebook from "expo-facebook";
-import * as Google from "expo-google-app-auth";
 import { firebase } from "../../firebase";
 import config from "../../config";
+import * as Facebook from "expo-facebook";
+import * as Google from "expo-google-app-auth";
+import * as AppleAuthentication from "expo-apple-authentication";
 
 type PropsType = {
   navigation: any;
@@ -75,13 +83,12 @@ export default class SignInScreen extends React.Component<PropsType> {
         ...config.google,
         scopes: ["profile", "email"]
       });
-
       if (type !== "success") {
         this.setState({ inProgress: "none" });
         return;
       }
 
-      // Build Firebase credential with the Google access token.
+      // Build Firebase credential with the id & access token.
       const credential = firebase.auth.GoogleAuthProvider.credential(
         idToken,
         accessToken
@@ -102,7 +109,30 @@ export default class SignInScreen extends React.Component<PropsType> {
    * Apple sign in.
    */
   onPressApple = async () => {
-    // TODO
+    try {
+      throw new Error("Not yet supported");
+      this.setState({ inProgress: "appleSignin" });
+
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL
+        ]
+      });
+
+      // Build Firebase credential with the id & access token.
+      /*const credential = firebase.auth.AppleAuthProvider.credential(
+        idToken,
+        accessToken
+      );*/
+    } catch (err) {
+      this.setState({ inProgress: "none" });
+      if (err.code === "ERR_CANCELED") {
+        // handle that the user canceled the sign-in flow
+      } else {
+        Alert.alert("Apple Login", err.message);
+      }
+    }
   };
 
   render() {
@@ -140,7 +170,22 @@ export default class SignInScreen extends React.Component<PropsType> {
           disabled={inProgress !== "none"}
           onPress={this.onPressGoogle}
         />
-        <Button
+        {Platform.OS === "ios" ? (
+          <AppleAuthentication.AppleAuthenticationButton
+            buttonType={
+              AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+            }
+            buttonStyle={
+              AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+            }
+            cornerRadius={Rounding.regular}
+            style={styles.appleButton}
+            onPress={this.onPressApple}
+          />
+        ) : (
+          undefined
+        )}
+        {/*<Button
           style={styles.button}
           color={Colors.white}
           textColor={Colors.black}
@@ -148,7 +193,7 @@ export default class SignInScreen extends React.Component<PropsType> {
           loading={inProgress === "appleSignin"}
           disabled={inProgress !== "none"}
           onPress={this.onPressApple}
-        />
+        />*/}
       </View>
     );
   }
@@ -178,5 +223,11 @@ const styles = StyleSheet.create({
   button: {
     margin: Margins.regular,
     marginBottom: 0
+  },
+  appleButton: {
+    margin: Margins.regular,
+    marginBottom: 0,
+    width: Dimensions.get("window").width - Margins.regular - Margins.regular,
+    height: Button.HEIGHT
   }
 });

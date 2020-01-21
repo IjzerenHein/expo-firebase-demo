@@ -14,6 +14,8 @@ type PropsType = {
 };
 
 export class Button extends React.Component<PropsType> {
+  static HEIGHT = 50;
+
   render() {
     const {
       style,
@@ -47,7 +49,7 @@ export class Button extends React.Component<PropsType> {
 
 const styles = StyleSheet.create({
   container: {
-    height: 50,
+    height: Button.HEIGHT,
     backgroundColor: Colors.blue,
     flexDirection: "row",
     justifyContent: "center",
