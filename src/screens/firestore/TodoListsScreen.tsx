@@ -1,12 +1,6 @@
 import * as React from "react";
-import { StyleSheet, ScrollView, Alert, ActivityIndicator } from "react-native";
-import {
-  ListItem,
-  ListSeparator,
-  Colors,
-  Button,
-  Margins
-} from "../../components";
+import { StyleSheet, ScrollView, Alert } from "react-native";
+import { ListSeparator, Button, Margins } from "../../components";
 import { firebase } from "../../firebase";
 import { Collection, Document } from "firestorter";
 import { observer } from "mobx-react";
@@ -20,7 +14,7 @@ type PropsType = {
 
 export default observer(
   class TodoListsScreen extends React.Component<PropsType> {
-    todoLists = new Collection<Document<TodoList>>("todoLists", {
+    myTodoLists = new Collection<Document<TodoList>>("todoLists", {
       query: ref => {
         const { currentUser } = firebase.auth();
         return currentUser
@@ -28,16 +22,20 @@ export default observer(
               .where("userId", "==", currentUser.uid)
               .orderBy("createdAt", "desc")
               .limit(50)
-          : ref
-              .where("public", "==", true)
-              .orderBy("createdAt", "desc")
-              .limit(50);
+          : null;
       }
+    });
+    publicTodoLists = new Collection<Document<TodoList>>("todoLists", {
+      query: ref =>
+        ref
+          .where("public", "==", true)
+          .orderBy("createdAt", "desc")
+          .limit(50)
     });
 
     onPressAdd = async () => {
       try {
-        await this.todoLists.add({
+        await this.myTodoLists.add({
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           userId: firebase.auth().currentUser.uid,
           name: "New todo list"
@@ -50,18 +48,20 @@ export default observer(
     render() {
       const { currentUser } = firebase.auth();
       const { navigation } = this.props;
-      const { docs, isLoading } = this.todoLists;
+      const { myTodoLists, publicTodoLists } = this;
       return (
         <ScrollView style={styles.container}>
-          {docs.map(doc => (
-            <TodoListListItem
-              key={doc.id}
-              todoList={doc}
-              navigation={navigation}
-            />
-          ))}
-          {isLoading ? <ActivityIndicator style={styles.loader} /> : undefined}
-
+          <ListSeparator label="My lists" />
+          {currentUser
+            ? myTodoLists.docs.map(doc => (
+                <TodoListListItem
+                  key={doc.id}
+                  todoList={doc}
+                  editable
+                  navigation={navigation}
+                />
+              ))
+            : undefined}
           {currentUser ? (
             <Button
               style={styles.button}
@@ -71,10 +71,18 @@ export default observer(
           ) : (
             <Button
               style={styles.button}
-              label="Sign in to view own todo lists"
+              label="Sign in to Add todo lists"
               disabled
             />
           )}
+          <ListSeparator label="Public lists" />
+          {publicTodoLists.docs.map(doc => (
+            <TodoListListItem
+              key={doc.id}
+              todoList={doc}
+              navigation={navigation}
+            />
+          ))}
         </ScrollView>
       );
     }

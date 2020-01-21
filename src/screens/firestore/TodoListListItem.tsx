@@ -7,10 +7,11 @@ import { ListItem } from "../../components";
 type PropsType = {
   navigation: any;
   todoList: Document<TodoList>;
+  editable?: boolean;
 };
 
 export default observer(function TodoListListItem(props: PropsType) {
-  const { todoList, navigation } = props;
+  const { todoList, navigation, editable } = props;
   if (!todoList) return null;
   const [todoItems] = React.useState(
     () =>
@@ -29,6 +30,7 @@ export default observer(function TodoListListItem(props: PropsType) {
       onPress={() =>
         navigation.navigate("TodoList", {
           title: name,
+          editable,
           todoList,
           todoItems
         })

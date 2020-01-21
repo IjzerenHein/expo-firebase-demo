@@ -19,6 +19,7 @@ type PropsType = {
     params: {
       todoList: Document<TodoList>;
       todoItems: Collection<Document<TodoItem>>;
+      editable: boolean;
     };
   };
 };
@@ -57,15 +58,13 @@ export default observer(
     };
 
     render() {
-      const { currentUser } = firebase.auth();
       const { navigation, route } = this.props;
-      const { todoList, todoItems } = route.params;
+      const { todoList, todoItems, editable } = route.params;
       const { name, public: isPublic } = todoList.data;
       const { docs, isLoading } = todoItems;
-      const editable = !!currentUser;
       return (
         <ScrollView style={styles.container}>
-          {currentUser ? (
+          {editable ? (
             <React.Fragment>
               <ListSeparator label="Settings" />
               <ListItem

@@ -42,12 +42,6 @@ export default observer(
               onValueChange={this.onChangeFinished}
             />
           }
-          //value={`${todoItems.docs.length} items`}
-          /*onPress={() =>
-        navigation.navigate("TodoList", {
-          col: todoItems
-        })
-      }*/
         />
       );
     }
