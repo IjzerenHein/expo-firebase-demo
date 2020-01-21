@@ -1,7 +1,12 @@
 import * as React from "react";
-import { StyleSheet, View, TouchableOpacity, ViewProps } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  ActivityIndicator
+} from "react-native";
 import { Heading2 } from "./Text";
-import { Margins, Colors, Rounding } from "./Styles";
+import { Colors, Rounding, Margins } from "./Styles";
 
 type PropsType = {
   style?: any;
@@ -31,16 +36,21 @@ export class Button extends React.Component<PropsType> {
         style={style}
         onPress={onPress}
         activeOpacity={0.5}
-        disabled={disabled}
+        disabled={disabled || loading}
       >
         <View
           style={[
             styles.container,
             color ? { backgroundColor: color } : undefined,
-            disabled || loading ? styles.disabled : undefined
+            disabled && !loading ? styles.disabled : undefined
           ]}
         >
           <Heading2 color={textColor || Colors.white}>{label}</Heading2>
+          {loading ? (
+            <ActivityIndicator style={styles.loader} color={Colors.white} />
+          ) : (
+            undefined
+          )}
         </View>
       </TouchableOpacity>
     );
@@ -58,5 +68,8 @@ const styles = StyleSheet.create({
   },
   disabled: {
     opacity: 0.4
+  },
+  loader: {
+    marginLeft: Margins.small
   }
 });

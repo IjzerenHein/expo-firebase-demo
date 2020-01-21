@@ -6,6 +6,7 @@ export type TextProps = {
   color?: string;
   style?: any;
   children: any;
+  numberOfLines?: number;
 };
 
 const styles = StyleSheet.create({

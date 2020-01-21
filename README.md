@@ -50,3 +50,8 @@ $ firebase deploy --only firestore:rules
 ```
 $ firebase deploy --only firestore:indexes
 ```
+
+- Deploy the Storage rules only
+```
+$ firebase deploy --only storage:rules
+```

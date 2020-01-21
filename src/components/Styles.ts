@@ -14,7 +14,8 @@ export const Colors = {
 };
 
 export const Margins = {
-  regular: 20
+  regular: 20,
+  small: 12
 };
 
 export const Rounding = {

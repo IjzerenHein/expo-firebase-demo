@@ -10,6 +10,8 @@ import AuthScreen from "./screens/auth/AuthScreen";
 import SignInScreen from "./screens/auth/SignInScreen";
 import TodoListsScreen from "./screens/firestore/TodoListsScreen";
 import TodoListScreen from "./screens/firestore/TodoListScreen";
+import FilesScreen from "./screens/storage/FilesScreen";
+import FileScreen from "./screens/storage/FileScreen";
 
 const RootStack = createStackNavigator();
 const MainStack = createStackNavigator();
@@ -49,6 +51,16 @@ function MainStackScreen() {
         name="TodoList"
         component={TodoListScreen}
         options={({ route }) => ({ title: route.params.title || "Todo list" })}
+      />
+      <MainStack.Screen
+        name="Files"
+        component={FilesScreen}
+        options={{ title: "Files" }}
+      />
+      <MainStack.Screen
+        name="File"
+        component={FileScreen}
+        options={{ title: "File" }}
       />
     </MainStack.Navigator>
   );

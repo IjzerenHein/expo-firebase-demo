@@ -25,7 +25,6 @@ export class ListItem extends React.Component<PropsType> {
   };
 
   onChangeText = (text: string) => {
-    console.log("onChangeText: ", text);
     this.setState({
       inputValue: text,
       inputValueSubmitted: false
@@ -33,7 +32,6 @@ export class ListItem extends React.Component<PropsType> {
   };
 
   onFocusInput = () => {
-    console.log("onFocusInput");
     this.setState({
       inputValue: this.props.value,
       isFocused: true
@@ -41,7 +39,6 @@ export class ListItem extends React.Component<PropsType> {
   };
 
   onBlurInput = async () => {
-    console.log("onBlurInput");
     const { onChangeValue } = this.props;
     const { inputValue } = this.state;
     if (inputValue === undefined) {
@@ -77,10 +74,16 @@ export class ListItem extends React.Component<PropsType> {
               onBlur={this.onBlurInput}
             />
           ) : (
-            <Heading2>{label}</Heading2>
+            <Heading2 style={styles.label}>{label}</Heading2>
           )}
           {!editable && value ? (
-            <Heading2 color={Colors.darkYellow}>{value}</Heading2>
+            <Heading2
+              style={styles.value}
+              color={Colors.darkYellow}
+              numberOfLines={1}
+            >
+              {value}
+            </Heading2>
           ) : (
             undefined
           )}
@@ -104,6 +107,13 @@ const styles = StyleSheet.create({
   },
   disabled: {
     opacity: 0.41
+  },
+  label: {
+    marginRight: Margins.small
+  },
+  value: {
+    textAlign: "right",
+    flex: 1
   },
   textInput: {
     flex: 1,
