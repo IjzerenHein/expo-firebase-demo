@@ -12,6 +12,13 @@ const config = {
   facebook: {
     appId: "182415762820612",
     appName: "Expo Firebase App"
+  },
+  google: {
+    iosClientId:
+      "192261076942-e5gntvtofv8c6sn5fe1cgajoa56ar3ou.apps.googleusercontent.com",
+    androidClientId: "TODO",
+    iosStandaloneAppClientId: "TODO",
+    androidStandaloneAppClientId: "TODO"
   }
 };
 

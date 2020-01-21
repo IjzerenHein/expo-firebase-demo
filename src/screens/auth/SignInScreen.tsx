@@ -3,6 +3,7 @@ import { StyleSheet, View, Alert } from "react-native";
 import { Heading2, Margins, Button, Icon, Colors } from "../../components";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Facebook from "expo-facebook";
+import * as Google from "expo-google-app-auth";
 import { firebase } from "../../firebase";
 import config from "../../config";
 
@@ -23,6 +24,9 @@ export default class SignInScreen extends React.Component<PropsType> {
     this.props.navigation.goBack();
   };
 
+  /**
+   * Facebook Sign in
+   */
   onPressFacebook = async () => {
     const { navigation } = this.props;
     try {
@@ -57,7 +61,47 @@ export default class SignInScreen extends React.Component<PropsType> {
     }
   };
 
-  onPressGoogle = () => {
+  /**
+   * Google sign in.
+   */
+  onPressGoogle = async () => {
+    const { navigation } = this.props;
+    try {
+      this.setState({ inProgress: "googleSignin" });
+
+      // Login with google
+      // @ts-ignore
+      const { type, accessToken, idToken } = await Google.logInAsync({
+        ...config.google,
+        scopes: ["profile", "email"]
+      });
+
+      if (type !== "success") {
+        this.setState({ inProgress: "none" });
+        return;
+      }
+
+      // Build Firebase credential with the Google access token.
+      const credential = firebase.auth.GoogleAuthProvider.credential(
+        idToken,
+        accessToken
+      );
+
+      // Sign in with credential from the Google user.
+      const authResult = await firebase.auth().signInWithCredential(credential);
+      console.log("authResult: ", authResult);
+
+      navigation.goBack();
+    } catch (err) {
+      this.setState({ inProgress: "none" });
+      Alert.alert("Google Login", err.message);
+    }
+  };
+
+  /**
+   * Apple sign in.
+   */
+  onPressApple = async () => {
     // TODO
   };
 
@@ -103,7 +147,7 @@ export default class SignInScreen extends React.Component<PropsType> {
           label={"Sign in with Apple"}
           loading={inProgress === "appleSignin"}
           disabled={inProgress !== "none"}
-          onPress={this.onPressGoogle}
+          onPress={this.onPressApple}
         />
       </View>
     );
