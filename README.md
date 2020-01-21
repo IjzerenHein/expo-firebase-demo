@@ -36,7 +36,7 @@ $ firebase deploy
 
 - Deploy the built website
 ```
-$ expo web:build
+$ expo build:web
 $ firebase deploy --only hosting
 ```
 
