@@ -6,6 +6,7 @@ import { initFirestorter } from "firestorter";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import "firebase/functions";
 
 // Initialize Firebase
 firebase.initializeApp(config.firebase);

@@ -41,6 +41,10 @@ export default class HomeScreen extends React.Component<PropsType> {
     this.props.navigation.navigate("Files");
   };
 
+  onPressFunctions = () => {
+    this.props.navigation.navigate("Echo");
+  };
+
   render() {
     const { navigation } = this.props;
     const { currentUser } = firebase.auth();
@@ -56,7 +60,7 @@ export default class HomeScreen extends React.Component<PropsType> {
           onPress={this.onPressDatabase}
         />
         <ListItem label={"Storage"} onPress={this.onPressStorage} />
-        <ListItem label={"Functions"} />
+        <ListItem label={"Functions"} onPress={this.onPressFunctions} />
         <ListSeparator label={"More"} />
         <ListItem label={"Analytics"} />
         <ListItem label={"Notifications"} />

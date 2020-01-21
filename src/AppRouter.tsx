@@ -12,6 +12,7 @@ import TodoListsScreen from "./screens/firestore/TodoListsScreen";
 import TodoListScreen from "./screens/firestore/TodoListScreen";
 import FilesScreen from "./screens/storage/FilesScreen";
 import FileScreen from "./screens/storage/FileScreen";
+import EchoScreen from "./screens/functions/EchoScreen";
 
 const RootStack = createStackNavigator();
 const MainStack = createStackNavigator();
@@ -61,6 +62,11 @@ function MainStackScreen() {
         name="File"
         component={FileScreen}
         options={{ title: "File" }}
+      />
+      <MainStack.Screen
+        name="Echo"
+        component={EchoScreen}
+        options={{ title: "Echo" }}
       />
     </MainStack.Navigator>
   );
