@@ -3,7 +3,7 @@
     "name": "expo-firebase-demo",
     "slug": "expo-firebase-demo",
     "privacy": "public",
-    "sdkVersion": "36.0.0",
+    "sdkVersion": "UNVERSIONED",
     "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
