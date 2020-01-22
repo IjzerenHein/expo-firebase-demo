@@ -14,6 +14,9 @@ import FilesScreen from "./screens/storage/FilesScreen";
 import FileScreen from "./screens/storage/FileScreen";
 import EchoScreen from "./screens/functions/EchoScreen";
 import LogEventScreen from "./screens/analytics/LogEventScreen";
+import RemoteConfigScreen from "./screens/remoteconfig/RemoteConfigScreen";
+import MessagingScreen from "./screens/messaging/MessagingScreen";
+import PerformanceScreen from "./screens/performance/PerformanceScreen";
 
 const RootStack = createStackNavigator();
 const MainStack = createStackNavigator();
@@ -73,6 +76,21 @@ function MainStackScreen() {
         name="LogEvent"
         component={LogEventScreen}
         options={{ title: "Log event" }}
+      />
+      <MainStack.Screen
+        name="RemoteConfig"
+        component={RemoteConfigScreen}
+        options={{ title: "Remote config" }}
+      />
+      <MainStack.Screen
+        name="Messaging"
+        component={MessagingScreen}
+        options={{ title: "Messaging" }}
+      />
+      <MainStack.Screen
+        name="Performance"
+        component={PerformanceScreen}
+        options={{ title: "Performance" }}
       />
     </MainStack.Navigator>
   );

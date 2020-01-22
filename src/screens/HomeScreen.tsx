@@ -33,22 +33,6 @@ export default class HomeScreen extends React.Component<PropsType> {
     }
   };
 
-  onPressDatabase = () => {
-    this.props.navigation.navigate("TodoLists");
-  };
-
-  onPressStorage = () => {
-    this.props.navigation.navigate("Files");
-  };
-
-  onPressFunctions = () => {
-    this.props.navigation.navigate("Echo");
-  };
-
-  onPressAnalytics = () => {
-    this.props.navigation.navigate("LogEvent");
-  };
-
   render() {
     const { navigation } = this.props;
     const { currentUser } = firebase.auth();
@@ -61,15 +45,35 @@ export default class HomeScreen extends React.Component<PropsType> {
         />
         <ListItem
           label={"Database (Firestore)"}
-          onPress={this.onPressDatabase}
+          onPress={() => navigation.navigate("TodoLists")}
         />
-        <ListItem label={"Storage"} onPress={this.onPressStorage} />
-        <ListItem label={"Functions"} onPress={this.onPressFunctions} />
-        <ListItem label={"Analytics"} onPress={this.onPressAnalytics} />
-        <ListSeparator label={"Not yet supported"} />
+        <ListItem
+          label={"Storage"}
+          onPress={() => navigation.navigate("Files")}
+        />
+        <ListItem
+          label={"Functions"}
+          onPress={() => navigation.navigate("Echo")}
+        />
+        <ListItem
+          label={"Analytics"}
+          onPress={() => navigation.navigate("LogEvent")}
+        />
+        <ListItem
+          label={"Remote Config"}
+          onPress={() => navigation.navigate("RemoteConfig")}
+        />
+        <ListItem
+          label={"Messaging"}
+          onPress={() => navigation.navigate("Messaging")}
+        />
+        <ListItem
+          label={"Performance"}
+          onPress={() => navigation.navigate("Performance")}
+        />
+        {/*<ListSeparator label={"Not yet supported"} />
         <ListItem label={"Notifications"} disabled />
-        <ListItem label={"Remote Config"} disabled />
-        <ListItem label={"Dynamic Links"} disabled />
+    <ListItem label={"Dynamic Links"} disabled />*/}
       </View>
     );
   }
