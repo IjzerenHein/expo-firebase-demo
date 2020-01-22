@@ -2637,6 +2637,11 @@ expo-error-recovery@~1.0.0:
   resolved "https://registry.yarnpkg.com/expo-error-recovery/-/expo-error-recovery-1.0.0.tgz#2ca9d59fcd16c5c881af877993731056f2d46afe"
   integrity sha512-xnxciNEpGmwxx8BAE2A9fd9HxtzWtz8p9mikKU+EfWgOXaYD3FJwgbFoVLD2pm4QUarxwOcic76rcwg+0cNnGg==
 
+expo-face-detector@~8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/expo-face-detector/-/expo-face-detector-8.0.0.tgz#dd8fcdffba2200bc8d96c0c26e1456ab42315226"
+  integrity sha512-eO1JQ8DdtRJbsubb8a3QvEPrajz8QmLVEF6rcJP82NoS8d4cPgprcs65GNgxixJS1ZrVTEnqjDlNtcVA2FtsQg==
+
 expo-facebook@~8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/expo-facebook/-/expo-facebook-8.0.0.tgz#d337a56459a3833488a879b925349b30c06a0afd"

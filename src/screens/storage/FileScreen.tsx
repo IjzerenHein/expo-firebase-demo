@@ -23,7 +23,7 @@ type StateType = {
 };
 
 export default class FileScreen extends React.Component<PropsType, StateType> {
-  state = {
+  state: StateType = {
     inProgress: "none"
   };
 
