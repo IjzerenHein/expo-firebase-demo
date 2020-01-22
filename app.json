@@ -19,7 +19,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "usesAppleSignIn": true
-    }
+      "usesAppleSignIn": true,
+      "bundleIdentifier": "nl.ijzerenhein.expo-firebase-demo",
+      "googleServicesFile": "./GoogleService-Info.plist"
+    },
+    "android": {}
   }
 }
