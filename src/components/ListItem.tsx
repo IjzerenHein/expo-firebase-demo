@@ -2,10 +2,11 @@ import * as React from "react";
 import { StyleSheet, View, TouchableOpacity, TextInput } from "react-native";
 import { Heading2 } from "./Text";
 import { Margins, Colors } from "./Styles";
+import { Switch } from "./Switch";
 
 type PropsType = {
   label: string;
-  value?: string;
+  value?: string | boolean;
   onPress?: () => any;
   disabled?: boolean;
   editable?: boolean;
@@ -76,14 +77,18 @@ export class ListItem extends React.Component<PropsType> {
           ) : (
             <Heading2 style={styles.label}>{label}</Heading2>
           )}
-          {!editable && value ? (
-            <Heading2
-              style={styles.value}
-              color={Colors.darkYellow}
-              numberOfLines={1}
-            >
-              {value}
-            </Heading2>
+          {!editable && value !== undefined ? (
+            typeof value === "boolean" ? (
+              <Switch value={value} disabled />
+            ) : (
+              <Heading2
+                style={styles.value}
+                color={Colors.darkYellow}
+                numberOfLines={1}
+              >
+                {value}
+              </Heading2>
+            )
           ) : (
             undefined
           )}

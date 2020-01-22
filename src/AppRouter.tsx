@@ -13,6 +13,7 @@ import TodoListScreen from "./screens/firestore/TodoListScreen";
 import FilesScreen from "./screens/storage/FilesScreen";
 import FileScreen from "./screens/storage/FileScreen";
 import EchoScreen from "./screens/functions/EchoScreen";
+import LogEventScreen from "./screens/analytics/LogEventScreen";
 
 const RootStack = createStackNavigator();
 const MainStack = createStackNavigator();
@@ -67,6 +68,11 @@ function MainStackScreen() {
         name="Echo"
         component={EchoScreen}
         options={{ title: "Echo" }}
+      />
+      <MainStack.Screen
+        name="LogEvent"
+        component={LogEventScreen}
+        options={{ title: "Log event" }}
       />
     </MainStack.Navigator>
   );

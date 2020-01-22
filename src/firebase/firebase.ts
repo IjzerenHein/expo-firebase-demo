@@ -7,6 +7,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 import "firebase/functions";
+import "firebase/analytics";
 
 // Initialize Firebase
 firebase.initializeApp(config.firebase);
