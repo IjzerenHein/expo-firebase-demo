@@ -1,7 +1,8 @@
 import * as React from "react";
 import { StyleSheet, View } from "react-native";
-import { Margins, ListItem, ListSeparator } from "../components";
+import { ListItem, ListSeparator } from "../components";
 import { firebase } from "../firebase";
+import { getTestModules } from "../tests/TestUtil";
 
 type PropsType = {
   navigation: any;
@@ -24,6 +25,12 @@ export default class HomeScreen extends React.Component<PropsType> {
     this._authListener();
   }
 
+  onPressRunTests = () => {
+    this.props.navigation.navigate("Tests", {
+      selected: getTestModules()
+    });
+  };
+
   onPressAuth = () => {
     const { currentUser } = firebase.auth();
     if (currentUser) {
@@ -38,6 +45,8 @@ export default class HomeScreen extends React.Component<PropsType> {
     const { currentUser } = firebase.auth();
     return (
       <View style={styles.container}>
+        <ListItem label={"Run tests"} onPress={this.onPressRunTests} />
+        <ListSeparator label="Interactive" />
         <ListItem
           label={"Authentication"}
           value={currentUser ? currentUser.displayName : "Not signed in"}

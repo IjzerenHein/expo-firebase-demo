@@ -18,6 +18,8 @@
     "expo-google-app-auth": "^8.0.0",
     "firebase": "^7.7.0",
     "firestorter": "^2.0.1",
+    "immutable": "^4.0.0-rc.12",
+    "jasmine-core": "^3.5.0",
     "mobx": "4",
     "mobx-react": "^6.1.5",
     "react": "~16.9.0",

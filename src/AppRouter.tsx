@@ -17,6 +17,7 @@ import LogEventScreen from "./screens/analytics/LogEventScreen";
 import RemoteConfigScreen from "./screens/remoteconfig/RemoteConfigScreen";
 import MessagingScreen from "./screens/messaging/MessagingScreen";
 import PerformanceScreen from "./screens/performance/PerformanceScreen";
+import TestScreen from "./screens/test/TestScreen";
 
 const RootStack = createStackNavigator();
 const MainStack = createStackNavigator();
@@ -91,6 +92,11 @@ function MainStackScreen() {
         name="Performance"
         component={PerformanceScreen}
         options={{ title: "Performance" }}
+      />
+      <MainStack.Screen
+        name="Tests"
+        component={TestScreen}
+        options={{ title: "Tests" }}
       />
     </MainStack.Navigator>
   );
