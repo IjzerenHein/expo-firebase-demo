@@ -6,18 +6,16 @@ import { UnavailabilityError } from "@unimodules/core";
 // the packager to pick them all up.
 export function getTestModules() {
   const modules = [
-    // Sanity
-    require("./tests/Basic")
+    //require("./Basic")
+    require("./FirebaseStorage"),
+    require("./FirebaseFunctions"),
+    require("./FirebaseFirestore"),
+    require("./FirebaseRemoteConfig"),
+    require("./FirebasePerformance"),
+    require("./FirebaseMessaging"),
+    require("./FirebaseAuth")
+    //require("./FirebaseAnalytics")
   ];
-
-  //modules.push(require("./tests/FirebaseAnalytics"));
-
-  /*if (global.DETOX) {
-    modules.push(
-      require('./tests/Contacts'),
-    );
-    return modules;
-  }*/
 
   return modules.filter(Boolean);
 }

@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet, View } from "react-native";
 import { ListItem, ListSeparator } from "../components";
 import { firebase } from "../firebase";
-import { getTestModules } from "../tests/TestUtil";
+import { getTestModules } from "../tests";
 
 type PropsType = {
   navigation: any;

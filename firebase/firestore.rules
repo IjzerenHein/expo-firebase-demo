@@ -1,6 +1,10 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    match /tests/{testId} {
+      allow read: if true;
+      allow write: if false;
+    }
   	match /todoLists/{todoListId} {
       allow read: if true;
       allow update, delete: if (request.auth.uid != null) && (request.auth.uid == resource.data.userId);
