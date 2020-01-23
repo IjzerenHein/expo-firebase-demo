@@ -1,4 +1,5 @@
 //import ExpoFirebaseApp from './ExpoFirebaseApp';
+import * as Types from "./types";
 
 type ExpoFirebaseModuleName =
   | "analytics"
@@ -17,15 +18,20 @@ let namedApps: {
   [name: string]: ExpoFirebaseApp;
 };
 
-export let analytics;
-export let auth;
-export let database;
-export let firestore;
-export let functions;
-export let messaging;
-export let performance;
-export let remoteConfig;
-export let storage;
+export let analytics: (app?: any) => Types.FirebaseAnalytics;
+export let auth: {
+  (app?: any): Types.FirebaseAuth;
+  Auth: typeof Types.FirebaseAuth;
+  FacebookAuthProvider: typeof Types.FacebookAuthProvider;
+  GoogleAuthProvider: typeof Types.GoogleAuthProvider;
+};
+export let database: (app?: any) => Types.FirebaseDatabase;
+export let firestore: (app?: any) => Types.FirebaseFirestore;
+export let functions: (app?: any) => Types.FirebaseFunctions;
+export let messaging: (app?: any) => Types.FirebaseMessaging;
+export let performance: (app?: any) => Types.FirebasePerformance;
+export let remoteConfig: (app?: any) => Types.FirebaseRemoteConfig;
+export let storage: (app?: any) => Types.FirebaseStorage;
 
 class ExpoFirebaseApp {
   private jsApp: any;
@@ -45,39 +51,39 @@ class ExpoFirebaseApp {
     throw new Error("Native modules not yet supported");
   }
 
-  analytics() {
+  analytics(): Types.FirebaseAnalytics {
     return this.getModule("analytics", analytics);
   }
 
-  auth() {
+  auth(): Types.FirebaseAuth {
     return this.getModule("auth", auth);
   }
 
-  database() {
+  database(): Types.FirebaseDatabase {
     return this.getModule("database", database);
   }
 
-  firestore() {
+  firestore(): Types.FirebaseFirestore {
     return this.getModule("firestore", firestore);
   }
 
-  functions() {
+  functions(): Types.FirebaseFunctions {
     return this.getModule("functions", functions);
   }
 
-  messaging() {
+  messaging(): Types.FirebaseMessaging {
     return this.getModule("messaging", messaging);
   }
 
-  performance() {
+  performance(): Types.FirebasePerformance {
     return this.getModule("performance", performance);
   }
 
-  remoteConfig() {
+  remoteConfig(): Types.FirebaseRemoteConfig {
     return this.getModule("remoteConfig", remoteConfig);
   }
 
-  storage() {
+  storage(): Types.FirebaseStorage {
     return this.getModule("storage", storage);
   }
 }
@@ -94,10 +100,10 @@ function getApp(name?: string): ExpoFirebaseApp {
 }
 
 export function setJSModule(name: ExpoFirebaseModuleName, firebase: any) {
-  function func(app?: any) {
+  const func: any = (app?: any) => {
     app = app || getApp();
     return app[name]();
-  }
+  };
   func.moduleType = "js";
 
   // hoist statics

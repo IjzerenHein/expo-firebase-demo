@@ -1,12 +1,6 @@
 import * as React from "react";
 import { ScrollView, Alert, StyleSheet } from "react-native";
-import {
-  ListItem,
-  Button,
-  Margins,
-  ListSeparator,
-  Colors
-} from "../../components";
+import { ListItem, Button, Margins, ListSeparator } from "../../components";
 import { firebase } from "../../firebase";
 
 type PropsType = {
