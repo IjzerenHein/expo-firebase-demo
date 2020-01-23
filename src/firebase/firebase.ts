@@ -1,21 +1,22 @@
-import config from "./config";
-import * as firebase from "firebase/app";
+import config from "../config";
+import * as firebase from "../packages/expo-firebase-app";
 import { initFirestorter } from "firestorter";
 
 // Add the Firebase products that you want to use
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/storage";
-import "firebase/functions";
-import "firebase/analytics";
-import "firebase/remote-config";
-import "firebase/messaging";
-import "firebase/performance";
+import "../packages/expo-firebase-analytics";
+import "../packages/expo-firebase-auth";
+import "../packages/expo-firebase-database";
+import "../packages/expo-firebase-firestore";
+import "../packages/expo-firebase-functions";
+import "../packages/expo-firebase-performance";
+import "../packages/expo-firebase-messaging";
+import "../packages/expo-firebase-remote-config";
+import "../packages/expo-firebase-storage";
 
-// Initialize Firebase
-firebase.initializeApp(config);
+firebase.initializeApp(config.firebase);
 
 initFirestorter({
+  // @ts-ignore
   firebase
 });
 

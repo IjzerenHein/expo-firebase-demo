@@ -51,34 +51,42 @@ export default class HomeScreen extends React.Component<PropsType> {
           label={"Authentication"}
           value={currentUser ? currentUser.displayName : "Not signed in"}
           onPress={this.onPressAuth}
+          disabled={!firebase.auth}
         />
         <ListItem
           label={"Database (Firestore)"}
           onPress={() => navigation.navigate("TodoLists")}
+          disabled={!firebase.firestore}
         />
         <ListItem
           label={"Storage"}
           onPress={() => navigation.navigate("Files")}
+          disabled={!firebase.storage}
         />
         <ListItem
           label={"Functions"}
           onPress={() => navigation.navigate("Echo")}
+          disabled={!firebase.functions}
         />
         <ListItem
           label={"Analytics"}
           onPress={() => navigation.navigate("LogEvent")}
+          disabled={!firebase.analytics}
         />
         <ListItem
           label={"Remote Config"}
           onPress={() => navigation.navigate("RemoteConfig")}
+          disabled={!firebase.remoteConfig}
         />
         <ListItem
           label={"Messaging"}
           onPress={() => navigation.navigate("Messaging")}
+          disabled={!firebase.messaging}
         />
         <ListItem
           label={"Performance"}
           onPress={() => navigation.navigate("Performance")}
+          disabled={!firebase.performance}
         />
         <ListItem
           label={"MLVision"}
