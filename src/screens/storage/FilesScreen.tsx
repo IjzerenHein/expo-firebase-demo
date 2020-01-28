@@ -34,7 +34,9 @@ export default class FilesScreen extends React.Component<PropsType> {
       });
 
       // Fetch files
-      const { currentUser } = firebase.auth();
+      const currentUser = firebase.auth
+        ? firebase.auth().currentUser
+        : undefined;
       const response = await Promise.all([
         firebase
           .storage()
@@ -66,7 +68,9 @@ export default class FilesScreen extends React.Component<PropsType> {
       this.setState({
         inProgress: "upload"
       });
-      const { currentUser } = firebase.auth();
+      const currentUser = firebase.auth
+        ? firebase.auth().currentUser
+        : undefined;
       const suffix = new Date().toISOString().replace(/\D/g, "");
       const fileContent = new ArrayBuffer(1000);
       const ref = firebase
@@ -98,7 +102,7 @@ export default class FilesScreen extends React.Component<PropsType> {
   };
 
   render() {
-    const { currentUser } = firebase.auth();
+    const currentUser = firebase.auth ? firebase.auth().currentUser : undefined;
     const { navigation } = this.props;
     const { refreshing, myFiles, publicFiles, inProgress } = this.state;
     return (

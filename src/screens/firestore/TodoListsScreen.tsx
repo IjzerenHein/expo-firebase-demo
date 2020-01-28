@@ -16,7 +16,9 @@ export default observer(
   class TodoListsScreen extends React.Component<PropsType> {
     myTodoLists = new Collection<Document<TodoList>>("todoLists", {
       query: ref => {
-        const { currentUser } = firebase.auth();
+        const currentUser = firebase.auth
+          ? firebase.auth().currentUser
+          : undefined;
         return currentUser
           ? ref
               .where("userId", "==", currentUser.uid)
@@ -46,7 +48,9 @@ export default observer(
     };
 
     render() {
-      const { currentUser } = firebase.auth();
+      const currentUser = firebase.auth
+        ? firebase.auth().currentUser
+        : undefined;
       const { navigation } = this.props;
       const { myTodoLists, publicTodoLists } = this;
       return (

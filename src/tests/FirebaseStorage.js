@@ -73,7 +73,9 @@ export async function test({ describe, beforeAll, afterAll, it, expect }) {
       it(`upload file succesfully`, async () => {
         let error = null;
         try {
-          const { currentUser } = firebase.auth();
+          const currentUser = firebase.auth
+            ? firebase.auth().currentUser
+            : undefined;
           const suffix = new Date().toISOString().replace(/\D/g, "");
           const fileContent = new ArrayBuffer(1000);
           const ref = firebase
