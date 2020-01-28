@@ -16,13 +16,17 @@ export default class HomeScreen extends React.Component<PropsType> {
   };
 
   componentDidMount() {
-    this._authListener = firebase
-      .auth()
-      .onAuthStateChanged(this.onAuthStateChanged);
+    if (firebase.auth) {
+      this._authListener = firebase
+        .auth()
+        .onAuthStateChanged(this.onAuthStateChanged);
+    }
   }
 
   componentWillUnmount() {
-    this._authListener();
+    if (this._authListener) {
+      this._authListener();
+    }
   }
 
   onPressRunTests = () => {
@@ -42,7 +46,7 @@ export default class HomeScreen extends React.Component<PropsType> {
 
   render() {
     const { navigation } = this.props;
-    const { currentUser } = firebase.auth();
+    const currentUser = firebase.auth ? firebase.auth().currentUser : undefined;
     return (
       <View style={styles.container}>
         <ListItem label={"Run tests"} onPress={this.onPressRunTests} />
