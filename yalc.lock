@@ -1,9 +1,0 @@
-{
-  "version": "v1",
-  "packages": {
-    "expo-firebase-app": {
-      "signature": "2be0af744273bf56b60dfc9fd9f12bbc",
-      "file": true
-    }
-  }
-}
