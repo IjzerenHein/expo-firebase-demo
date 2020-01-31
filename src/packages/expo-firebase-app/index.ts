@@ -7,9 +7,10 @@ type ExpoFirebaseModuleName =
   | "database"
   | "firestore"
   | "functions"
+  | "installations"
   | "messaging"
   | "performance"
-  | "remoteConfig"
+  | "remoteconfig"
   | "storage";
 
 let jsFirebase: any;
@@ -28,9 +29,10 @@ export let auth: {
 export let database: (app?: any) => Types.FirebaseDatabase;
 export let firestore: (app?: any) => Types.FirebaseFirestore;
 export let functions: (app?: any) => Types.FirebaseFunctions;
+export let installations: (app?: any) => Types.FirebaseInstallations;
 export let messaging: (app?: any) => Types.FirebaseMessaging;
 export let performance: (app?: any) => Types.FirebasePerformance;
-export let remoteConfig: (app?: any) => Types.FirebaseRemoteConfig;
+export let remoteconfig: (app?: any) => Types.FirebaseRemoteConfig;
 export let storage: (app?: any) => Types.FirebaseStorage;
 
 class ExpoFirebaseApp {
@@ -71,6 +73,10 @@ class ExpoFirebaseApp {
     return this.getModule("functions", functions);
   }
 
+  installations(): Types.FirebaseInstallations {
+    return this.getModule("installations", functions);
+  }
+
   messaging(): Types.FirebaseMessaging {
     return this.getModule("messaging", messaging);
   }
@@ -80,7 +86,7 @@ class ExpoFirebaseApp {
   }
 
   remoteConfig(): Types.FirebaseRemoteConfig {
-    return this.getModule("remoteConfig", remoteConfig);
+    return this.getModule("remoteconfig", remoteconfig);
   }
 
   storage(): Types.FirebaseStorage {
@@ -128,14 +134,17 @@ export function setJSModule(name: ExpoFirebaseModuleName, firebase: any) {
     case "functions":
       functions = func;
       break;
+    case "installations":
+      installations = func;
+      break;
     case "messaging":
       messaging = func;
       break;
     case "performance":
       performance = func;
       break;
-    case "remoteConfig":
-      remoteConfig = func;
+    case "remoteconfig":
+      remoteconfig = func;
       break;
     case "storage":
       storage = func;
