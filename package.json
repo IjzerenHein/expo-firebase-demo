@@ -16,6 +16,8 @@
     "expo-face-detector": "file://Users/hein/repos/Expo/expo/packages/expo-face-detector",
     "expo-facebook": "~8.0.0",
     "expo-file-system": "~8.0.0",
+    "expo-firebase-analytics": "file:.yalc/expo-firebase-analytics",
+    "expo-firebase-core": "file:.yalc/expo-firebase-core",
     "expo-google-app-auth": "^8.0.0",
     "expokit": "36.0.1",
     "firebase": "^7.8.1",

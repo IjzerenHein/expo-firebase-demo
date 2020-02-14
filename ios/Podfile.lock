@@ -39,6 +39,13 @@ PODS:
   - EXFileSystem (8.0.0):
     - UMCore
     - UMFileSystemInterface
+  - EXFirebaseAnalytics (3.0.0-5e614202):
+    - EXFirebaseCore
+    - Firebase/Core (~> 6.14.0)
+    - UMCore
+  - EXFirebaseCore (1.0.0-90747a82):
+    - Firebase/Core (~> 6.14.0)
+    - UMCore
   - EXFont (8.0.0):
     - UMCore
     - UMFontInterface
@@ -463,6 +470,8 @@ DEPENDENCIES:
   - EXFacebook (from `../node_modules/expo-facebook/ios`)
   - EXFaceDetector (from `../node_modules/expo-face-detector/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
+  - EXFirebaseAnalytics (from `../node_modules/expo-firebase-analytics/ios`)
+  - EXFirebaseCore (from `../node_modules/expo-firebase-core/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
   - EXKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - EXLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
@@ -571,6 +580,12 @@ EXTERNAL SOURCES:
   EXFileSystem:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-file-system/ios"
+  EXFirebaseAnalytics:
+    :path: !ruby/object:Pathname
+    path: "../node_modules/expo-firebase-analytics/ios"
+  EXFirebaseCore:
+    :path: !ruby/object:Pathname
+    path: "../node_modules/expo-firebase-core/ios"
   EXFont:
     :path: !ruby/object:Pathname
     path: "../node_modules/expo-font/ios"
@@ -700,6 +715,8 @@ SPEC CHECKSUMS:
   EXFacebook: c10f77ea97b3003c29b4f0a49942acc1ba8330b5
   EXFaceDetector: 0140a1958708b0cb65e9102962dbebd7d9e061b2
   EXFileSystem: 6e0d9bb6cc4ea404dbb8f583c1a8a2dcdf4b83b6
+  EXFirebaseAnalytics: f07b9647c5e50319d9f8d6d18782e137344434d2
+  EXFirebaseCore: 575779b19b414b72ea3d6042921ae0b992d81ed3
   EXFont: 6187b5ab46ee578d5f8e7f2ea092752e78772235
   EXKeepAwake: 66e9f80b6d129633725a0e42f8d285c229876811
   EXLinearGradient: 75f302f9d6484267a3f6d3252df2e7a5f00e716a
@@ -770,6 +787,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: a98e37a576a5220bf43b8faf33cfdc129d2f441d
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: c9119bd9dabe90cf1915a09d7473650a13cf137f
+PODFILE CHECKSUM: 87bd496788be7c6195981b08fc65d9a4b25f4778
 
 COCOAPODS: 1.8.4

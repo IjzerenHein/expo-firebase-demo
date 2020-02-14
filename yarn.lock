@@ -2653,6 +2653,12 @@ expo-file-system@~8.0.0:
   dependencies:
     uuid-js "^0.7.5"
 
+"expo-firebase-analytics@file:.yalc/expo-firebase-analytics":
+  version "3.0.0-5e614202"
+
+"expo-firebase-core@file:.yalc/expo-firebase-core":
+  version "1.0.0-90747a82"
+
 expo-font@~8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/expo-font/-/expo-font-8.0.0.tgz#33afd0b501caf8f0392aea77f08717090eeb8d41"

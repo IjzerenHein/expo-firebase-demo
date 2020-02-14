@@ -1,7 +1,7 @@
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '10.0'
 
-$FirebaseSDKVersion = '~> 6.13.0'
+$FirebaseSDKVersion = '~> 6.14.0'
 
 target 'expo-firebase-demo' do
   pod 'ExpoKit',

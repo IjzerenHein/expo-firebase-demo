@@ -1,0 +1,13 @@
+{
+  "version": "v1",
+  "packages": {
+    "expo-firebase-core": {
+      "signature": "90747a82e081aa24b9a324a45ac40e2f",
+      "file": true
+    },
+    "expo-firebase-analytics": {
+      "signature": "5e614202ec06e98110bd8f164c89438d",
+      "file": true
+    }
+  }
+}
