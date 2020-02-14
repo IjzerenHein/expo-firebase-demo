@@ -7,14 +7,16 @@ import { UnavailabilityError } from "@unimodules/core";
 export function getTestModules() {
   const modules = [
     //require("./Basic")
-    require("./FirebaseStorage"),
-    require("./FirebaseFunctions"),
+    require("./FirebaseAnalytics"),
+    require("./FirebaseAuth"),
+    require("./FirebaseDatabase"),
     require("./FirebaseFirestore"),
-    require("./FirebaseRemoteConfig"),
-    require("./FirebasePerformance"),
+    require("./FirebaseFunctions"),
+    require("./FirebaseInstallations"),
     require("./FirebaseMessaging"),
-    require("./FirebaseAuth")
-    //require("./FirebaseAnalytics")
+    require("./FirebasePerformance"),
+    require("./FirebaseRemoteConfig"),
+    require("./FirebaseStorage")
   ];
 
   return modules.filter(Boolean);
