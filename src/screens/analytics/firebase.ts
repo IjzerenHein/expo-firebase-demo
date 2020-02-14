@@ -1,11 +1,18 @@
-import JSAnalytics from "./JSFirebaseAnalytics";
+import Constants from "expo-constants";
+import FirebaseAnalyticsJS from "./FirebaseAnalyticsJS";
 import config from "../../config";
 
-let analytics: JSAnalytics;
+let analytics: FirebaseAnalyticsJS;
 
 export default {
   analytics() {
-    analytics = analytics || new JSAnalytics(config.firebase.measurementId);
+    analytics =
+      analytics ||
+      new FirebaseAnalyticsJS(config.firebase, {
+        clientId: Constants.sessionId,
+        appName: Constants.manifest.name,
+        appVersion: Constants.manifest.version
+      });
     return analytics;
   }
 };

@@ -1,14 +1,98 @@
-import { Platform } from "@unimodules/core";
-import Constants from "expo-constants";
+type FirebaseAnalyticsJSCodedEvent = { [key: string]: any };
 
-type JSFirebaseAnalyticsCodedEvent = { [key: string]: any };
-
-interface JSFirebaseAnalyticsOptions {
-  maxCacheTime: number;
-  strictNativeEmulation: boolean;
+interface FirebaseAnalyticsJSConfig {
+  /**
+   * **(Required)** Measurement-Id as found in the web Firebase-config.
+   * The format is G-XXXXXXXXXX.
+   */
+  measurementId: string;
 }
 
-function encodeQueryArgs(queryArgs: JSFirebaseAnalyticsCodedEvent): string {
+interface FirebaseAnalyticsJSOptions {
+  /**
+   * **(Required)** Anonymously identifies a particular user, device, or browser instance.
+   * For the web, this is generally stored as a first-party cookie with a two-year expiration.
+   * For mobile apps, this is randomly generated for each particular instance of an application install.
+   * The value of this field should be a random UUID (version 4) as described in http://www.ietf.org/rfc/rfc4122.txt.
+   * https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid
+   */
+  clientId: string;
+
+  /**
+   * Max cache time in msec (default = 5000).
+   * Caches events fired within a certain time-frame and then
+   * sends them to the Google Measurement API in a single batch.
+   */
+  maxCacheTime?: number;
+
+  /**
+   * Enables strict data format checks for logEvent and setUserProperties.
+   * When enabled, causes `logEvent` and `setUserProperties` to strictly check
+   * whether any event- names & values and user-properties conform to the
+   * native SDK requirements.
+   */
+  strictNativeEmulation?: boolean;
+
+  /**
+   * Document title (e.g. "My Awesome Page").
+   * This is a browser specific field.
+   * https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#dt
+   */
+  docTitle?: string;
+
+  /**
+   * Document location URL (e.g. "https://myawesomeapp.com").
+   * This is a browser specific field.
+   * https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#dl
+   */
+  docLocation?: string;
+
+  /**
+   * Screen-resolution in the format "WxH" (e.g "2000x1440").
+   * This is a browser specific field.
+   * https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#sr
+   */
+  screenRes?: string;
+
+  /**
+   * Application name (e.g. "My Awesome App").
+   * This is a mobile app specific field.
+   * https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#an
+   */
+  appName?: string;
+
+  /**
+   * Application version (e.g. "1.2").
+   * This is a mobile app specific field.
+   * https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#av
+   */
+  appVersion?: string;
+
+  /**
+   * User language (e.g. "en-us").
+   * https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ul
+   */
+  userLanguage?: string;
+
+  /**
+   * Custom query arguments that are appended to the POST request that is send to the
+   * Google Measurement API v2.
+   *
+   * @example
+   * ```
+   * const analytics = new FirebaseAnalyticsJS(config, {
+   *   appName: 'My Awesome App',
+   *   customArg: {
+   *     vp: '123x456', // Add viewport-size
+   *     sd: '24-bits' // Add screen-colors
+   *   }
+   * });
+   * ```
+   */
+  customArgs?: { [key: string]: any };
+}
+
+function encodeQueryArgs(queryArgs: FirebaseAnalyticsJSCodedEvent): string {
   const now = Date.now();
   return Object.keys(queryArgs)
     .map(key => {
@@ -19,58 +103,60 @@ function encodeQueryArgs(queryArgs: JSFirebaseAnalyticsCodedEvent): string {
     .join("&");
 }
 
+const SHORT_EVENT_PARAMS = {
+  currency: "cu"
+};
+
 /**
- * A basic & lightweight Google Analytics tracker that uses
- * HTTPS Measurement API 2 to send events to Google Analytics.
+ * A pure JavaScript Google Firebase Analytics implementation that uses
+ * the HTTPS Measurement API 2 to send events to Google Analytics.
  *
- * The tracker-class supports an API that is very similar to the Firebase Analytics &
- * gtag api. This makes it possible to use this class as a substitute tracker, for
- * instance on react-native environments that don't support gtag or its dependencies.
+ * This class provides an alternative for the Firebase Analytics module
+ * shipped with the Firebase JS SDK. That library uses the gtag.js dependency
+ * and requires certain browser features. This prevents the use
+ * analytics on other platforms, such as Node-js and react-native.
+ *
+ * FirebaseAnalyticsJS provides a bare-bone implementation of the new
+ * HTTPS Measurement API 2 protocol (which is undocumented), with an API
+ * that follows the Firebase Analytics JS SDK.
  */
-class JSFirebaseAnalytics {
+class FirebaseAnalyticsJS {
   public readonly url: string;
   private enabled: boolean;
-  public readonly trackingId: string;
+  public readonly config: FirebaseAnalyticsJSConfig;
   private clientId: string;
   private userId?: string;
   private userProperties?: { [key: string]: any };
   private screenName?: string;
-  private eventQueue = new Set<JSFirebaseAnalyticsCodedEvent>();
-  private options: JSFirebaseAnalyticsOptions;
-  private flushEventsPromise: Promise<void>;
+  private eventQueue = new Set<FirebaseAnalyticsJSCodedEvent>();
+  private options: FirebaseAnalyticsJSOptions;
+  private flushEventsPromise: Promise<void> = Promise.resolve();
   private flushEventsTimer: any;
 
-  static SHORT_EVENT_PARAMS = {
-    currency: "cu"
-  };
+  constructor(
+    config: FirebaseAnalyticsJSConfig,
+    options: FirebaseAnalyticsJSOptions
+  ) {
+    // Verify the measurement- & client Ids
+    if (!config.measurementId)
+      throw new Error(
+        "No valid measurementId. Make sure to provide a valid measurementId with a G-XXXXXXXXXX format."
+      );
+    if (!options.clientId)
+      throw new Error(
+        "No valid clientId. Make sure to provide a valid clientId with a UUID (v4) format."
+      );
 
-  constructor(trackingId: string, options?: JSFirebaseAnalyticsOptions) {
+    // Initialize
     this.url = "https://www.google-analytics.com/g/collect";
     this.enabled = true;
-
-    // The tracking ID / web property ID. The format is G-XXXXXXXX.
-    // All collected data is associated by this ID.
-    this.trackingId = trackingId;
-
-    // The clientId anonymously identifies a particular user, device, or browser instance.
-    // For the web, this is generally stored as a first-party cookie with a two-year expiration.
-    // For mobile apps, this is randomly generated for each particular instance of an application install.
-    // The value of this field should be a random UUID (version 4) as described in http://www.ietf.org/rfc/rfc4122.txt.
-    //this.clientId = Constants.installationId;
-    // TODO
-    this.clientId = "225648371.1580903706";
-
-    // Set the options
+    this.config = config;
     this.options = {
+      customArgs: {},
       maxCacheTime: 5000,
-      strictNativeEmulation: false
+      strictNativeEmulation: false,
+      ...options
     };
-    if (options) {
-      this.options = {
-        ...this.options,
-        ...options
-      };
-    }
   }
 
   /**
@@ -80,34 +166,21 @@ class JSFirebaseAnalytics {
    * the body of the POST request.
    */
   private async send(
-    events: Set<JSFirebaseAnalyticsCodedEvent>
+    events: Set<FirebaseAnalyticsJSCodedEvent>
   ): Promise<void> {
-    let queryArgs = {
+    const { config, options } = this;
+    let queryArgs: any = {
+      ...options.customArgs,
       v: 2,
-      tid: this.trackingId,
+      tid: config.measurementId,
       cid: this.clientId
-      /*
-      gtm: 2oe250
-      _p: 769479815
-      sr: 3440x1440
-      ul: en-us
-      _fid: cfZrCTjKgXnSjj4N_Bwtgx
-      cid: 225648371.1580903706
-      dl: http://10.10.200.202/
-      dr: http://10.10.200.202:19006/
-      dt: expo-firebase-demo
-      sid: 1581606982
-      sct: 8
-      seg: 1
-      _s: 1
-      */
-      //ul: 'en-us',
-      //an: 'Expo Client',
-      //av: '1.2',
-      //ds: 'app',
-      //aid: '',
-      //_fid:
     };
+    if (options.userLanguage) queryArgs.ul = options.userLanguage;
+    if (options.appName) queryArgs.an = options.appName;
+    if (options.appVersion) queryArgs.av = options.appVersion;
+    if (options.docTitle) queryArgs.dt = options.docTitle;
+    if (options.docLocation) queryArgs.dl = options.docLocation;
+    if (options.screenRes) queryArgs.sr = options.screenRes;
     let body;
 
     if (events.size > 1) {
@@ -123,16 +196,16 @@ class JSFirebaseAnalytics {
       };
     }
     const args = encodeQueryArgs(queryArgs);
-    console.log(`GATracker: ${args}...`);
+    //console.log(`FirebaseAnalyticsJS: ${args}...`);
     const response = await fetch(`${this.url}?${args}`, {
       method: "POST",
       cache: "no-cache",
       body
     });
-    console.log(`GATracker: response: ${response.status}`);
+    //console.log(`FirebaseAnalyticsJS: response: ${response.status}`);
   }
 
-  private async addEvent(event: JSFirebaseAnalyticsCodedEvent) {
+  private async addEvent(event: FirebaseAnalyticsJSCodedEvent) {
     const { userId, userProperties, screenName } = this;
 
     // Extend the event with the currently set User-id
@@ -146,7 +219,7 @@ class JSFirebaseAnalytics {
 
       // Reset user-properties after the first event. This is what gtag.js seems
       // to do as well, although I couldn't find any docs explaining this behavior.
-      this.userProperties = null;
+      this.userProperties = undefined;
     }
 
     // Add the event to the queue
@@ -168,7 +241,7 @@ class JSFirebaseAnalytics {
 
   private async flushEvents() {
     if (!this.eventQueue.size) return;
-    const events = new Set<JSFirebaseAnalyticsCodedEvent>(this.eventQueue);
+    const events = new Set<FirebaseAnalyticsJSCodedEvent>(this.eventQueue);
     await this.send(events);
     events.forEach(event => this.eventQueue.delete(event));
   }
@@ -194,7 +267,7 @@ class JSFirebaseAnalytics {
   static parseEvent(
     eventName: string,
     eventParams?: { [key: string]: any }
-  ): JSFirebaseAnalyticsCodedEvent {
+  ): FirebaseAnalyticsJSCodedEvent {
     if (
       !eventName ||
       !eventName.length ||
@@ -209,7 +282,7 @@ class JSFirebaseAnalytics {
         "Invalid event-name specified. Should contain 1 to 40 alphanumeric characters or underscores. The name must start with an alphabetic character."
       );
     }
-    const params: JSFirebaseAnalyticsCodedEvent = {
+    const params: FirebaseAnalyticsJSCodedEvent = {
       en: eventName,
       _et: Date.now(),
       "ep.origin": "firebase"
@@ -217,7 +290,7 @@ class JSFirebaseAnalytics {
     if (eventParams) {
       for (let key in eventParams) {
         const paramKey =
-          JSFirebaseAnalytics.SHORT_EVENT_PARAMS[key] ||
+          SHORT_EVENT_PARAMS[key] ||
           (typeof eventParams[key] === "number" ? `epn.${key}` : `ep.${key}`);
         params[paramKey] = eventParams[key];
       }
@@ -235,7 +308,7 @@ class JSFirebaseAnalytics {
   static parseUserProperty(
     userPropertyName: string,
     userPropertyValue: any,
-    options: JSFirebaseAnalyticsOptions
+    options: FirebaseAnalyticsJSOptions
   ): string {
     if (
       !userPropertyName.length ||
@@ -273,7 +346,7 @@ class JSFirebaseAnalytics {
     eventParams?: { [key: string]: any }
   ): Promise<void> {
     console.log("logEvent: ", eventName, eventParams);
-    const event = JSFirebaseAnalytics.parseEvent(eventName, eventParams);
+    const event = FirebaseAnalyticsJS.parseEvent(eventName, eventParams);
     if (!this.enabled) return;
     return this.addEvent(event);
   }
@@ -294,7 +367,7 @@ class JSFirebaseAnalytics {
   ): Promise<void> {
     if (!this.enabled) return;
     const isChanged = this.screenName !== screenName;
-    this.screenName = screenName || null;
+    this.screenName = screenName || undefined;
     // https://developers.google.com/analytics/devguides/collection/analyticsjs/screens
     if (isChanged) {
       await this.logEvent("screenview");
@@ -306,7 +379,7 @@ class JSFirebaseAnalytics {
    */
   async setUserId(userId: string | null): Promise<void> {
     if (!this.enabled) return;
-    this.userId = userId;
+    this.userId = userId || undefined;
   }
 
   /**
@@ -319,7 +392,7 @@ class JSFirebaseAnalytics {
     console.log(`setUserProperties: ${userProperties}`);
     for (let name in userProperties) {
       const val = userProperties[name];
-      const key = JSFirebaseAnalytics.parseUserProperty(
+      const key = FirebaseAnalyticsJS.parseUserProperty(
         name,
         val,
         this.options
@@ -336,4 +409,4 @@ class JSFirebaseAnalytics {
   }
 }
 
-export default JSFirebaseAnalytics;
+export default FirebaseAnalyticsJS;
