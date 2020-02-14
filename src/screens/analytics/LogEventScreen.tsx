@@ -1,6 +1,12 @@
 import * as React from "react";
-import { ScrollView, Alert, StyleSheet } from "react-native";
-import { ListItem, Button, Margins, ListSeparator } from "../../components";
+import { ScrollView, StyleSheet } from "react-native";
+import {
+  ListItem,
+  Button,
+  Margins,
+  ListSeparator,
+  showError
+} from "../../components";
 import { firebase } from "../../firebase";
 import customTrackerFirebase from "./firebase";
 
@@ -110,19 +116,13 @@ export default class LogEventScreen extends React.Component<
 
   onPressLogEvent = async () => {
     try {
-      this.setState({
-        inProgress: "logevent"
-      });
+      this.setState({ inProgress: "logevent" });
       const { firebase, eventName, eventParams } = this.state;
       await firebase.analytics().logEvent(eventName, eventParams);
-      this.setState({
-        inProgress: "none"
-      });
+      this.setState({ inProgress: "none" });
     } catch (err) {
-      this.setState({
-        inProgress: "none"
-      });
-      Alert.alert("Analytics error", err.message);
+      this.setState({ inProgress: "none" });
+      showError(err);
     }
   };
 
@@ -143,19 +143,13 @@ export default class LogEventScreen extends React.Component<
 
   onPressSetUserId = async () => {
     try {
-      this.setState({
-        inProgress: "setuserid"
-      });
+      this.setState({ inProgress: "setuserid" });
       const { firebase, userId } = this.state;
       await firebase.analytics().setUserId(userId);
-      this.setState({
-        inProgress: "none"
-      });
+      this.setState({ inProgress: "none" });
     } catch (err) {
-      this.setState({
-        inProgress: "none"
-      });
-      Alert.alert("Analytics error", err.message);
+      this.setState({ inProgress: "none" });
+      showError(err);
     }
   };
 
@@ -171,19 +165,13 @@ export default class LogEventScreen extends React.Component<
 
   onPressSetUserProperties = async () => {
     try {
-      this.setState({
-        inProgress: "setuserproperties"
-      });
+      this.setState({ inProgress: "setuserproperties" });
       const { firebase, userProperties } = this.state;
       await firebase.analytics().setUserProperties(userProperties);
-      this.setState({
-        inProgress: "none"
-      });
+      this.setState({ inProgress: "none" });
     } catch (err) {
-      this.setState({
-        inProgress: "none"
-      });
-      Alert.alert("Analytics error", err.message);
+      this.setState({ inProgress: "none" });
+      showError(err);
     }
   };
 
