@@ -1,1 +1,1 @@
-export * from "./firebase_local";
+export * from "./firebase_web";
