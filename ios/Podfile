@@ -1,6 +1,8 @@
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '10.0'
 
+$FirebaseSDKVersion = '~> 6.13.0'
+
 target 'expo-firebase-demo' do
   pod 'ExpoKit',
     :git => "http://github.com/expo/expo.git",
@@ -9,8 +11,6 @@ target 'expo-firebase-demo' do
       "Core"
     ],
     :inhibit_warnings => true
-
-  # pod 'Firebase/Core', '~> 6.13.0'
 
   # Install unimodules
   require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
