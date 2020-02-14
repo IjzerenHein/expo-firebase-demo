@@ -23,7 +23,13 @@ type StateType = {
   userProperties: {
     [key: string]: string | number | boolean;
   };
-  inProgress: "none" | "logevent" | "setuserid" | "setuserproperties";
+  screenName: string;
+  inProgress:
+    | "none"
+    | "logevent"
+    | "setuserid"
+    | "setuserproperties"
+    | "setcurrentscreen";
   firebase: any;
 };
 
@@ -82,6 +88,8 @@ const USERPROPS = {
   c: {}
 };
 
+const SCREENS = ["MainScreen", "DetailScreen", "ProfileScreen"];
+
 export default class LogEventScreen extends React.Component<
   PropsType,
   StateType
@@ -93,6 +101,7 @@ export default class LogEventScreen extends React.Component<
     userId: "",
     userPropertiesKey: "a",
     userProperties: USERPROPS.a,
+    screenName: SCREENS[0],
     inProgress: "none",
     firebase
   };
@@ -175,6 +184,26 @@ export default class LogEventScreen extends React.Component<
     }
   };
 
+  onPressScreenName = () => {
+    const { screenName } = this.state;
+    const idx = (SCREENS.indexOf(screenName) + 1) % SCREENS.length;
+    this.setState({
+      screenName: SCREENS[idx]
+    });
+  };
+
+  onPressSetCurrentScreen = async () => {
+    try {
+      this.setState({ inProgress: "setcurrentscreen" });
+      const { firebase, screenName } = this.state;
+      await firebase.analytics().setCurrentScreen(screenName);
+      this.setState({ inProgress: "none" });
+    } catch (err) {
+      this.setState({ inProgress: "none" });
+      showError(err);
+    }
+  };
+
   render() {
     const {
       inProgress,
@@ -183,7 +212,8 @@ export default class LogEventScreen extends React.Component<
       firebase,
       userId,
       userPropertiesKey,
-      userProperties
+      userProperties,
+      screenName
     } = this.state;
     return (
       <ScrollView style={styles.container}>
@@ -208,6 +238,18 @@ export default class LogEventScreen extends React.Component<
           label="Log event"
           onPress={this.onPressLogEvent}
           loading={inProgress === "logEvent"}
+        />
+        <ListSeparator label="Press 'Screen Name' to select a screen" />
+        <ListItem
+          label="Screen Name"
+          value={screenName}
+          onPress={this.onPressScreenName}
+        />
+        <Button
+          style={styles.button}
+          label="Set Current Screen"
+          onPress={this.onPressSetCurrentScreen}
+          loading={inProgress === "setcurrentscreen"}
         />
         <ListSeparator label="Press 'User Id' to switch user ids" />
         <ListItem label="User Id" value={userId} onPress={this.onPressUserId} />

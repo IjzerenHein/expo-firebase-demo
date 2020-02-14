@@ -75,6 +75,11 @@ interface FirebaseAnalyticsJSOptions {
   userLanguage?: string;
 
   /**
+   * Origin (default =  "firebase").
+   */
+  origin?: string;
+
+  /**
    * Custom query arguments that are appended to the POST request that is send to the
    * Google Measurement API v2.
    *
@@ -124,7 +129,6 @@ class FirebaseAnalyticsJS {
   public readonly url: string;
   private enabled: boolean;
   public readonly config: FirebaseAnalyticsJSConfig;
-  private clientId: string;
   private userId?: string;
   private userProperties?: { [key: string]: any };
   private screenName?: string;
@@ -155,6 +159,7 @@ class FirebaseAnalyticsJS {
       customArgs: {},
       maxCacheTime: 5000,
       strictNativeEmulation: false,
+      origin: "firebase",
       ...options
     };
   }
@@ -173,7 +178,7 @@ class FirebaseAnalyticsJS {
       ...options.customArgs,
       v: 2,
       tid: config.measurementId,
-      cid: this.clientId
+      cid: this.options.clientId
     };
     if (options.userLanguage) queryArgs.ul = options.userLanguage;
     if (options.appName) queryArgs.an = options.appName;
@@ -197,7 +202,7 @@ class FirebaseAnalyticsJS {
     }
     const args = encodeQueryArgs(queryArgs);
     //console.log(`FirebaseAnalyticsJS: ${args}...`);
-    const response = await fetch(`${this.url}?${args}`, {
+    await fetch(`${this.url}?${args}`, {
       method: "POST",
       cache: "no-cache",
       body
@@ -210,6 +215,7 @@ class FirebaseAnalyticsJS {
 
     // Extend the event with the currently set User-id
     if (userId) event.uid = userId;
+    if (screenName) event["ep.screen_name"] = screenName;
 
     // Add user-properties
     if (userProperties) {
@@ -265,6 +271,7 @@ class FirebaseAnalyticsJS {
    * through the Google Measurement API v2.
    */
   static parseEvent(
+    options: FirebaseAnalyticsJSOptions,
     eventName: string,
     eventParams?: { [key: string]: any }
   ): FirebaseAnalyticsJSCodedEvent {
@@ -285,7 +292,7 @@ class FirebaseAnalyticsJS {
     const params: FirebaseAnalyticsJSCodedEvent = {
       en: eventName,
       _et: Date.now(),
-      "ep.origin": "firebase"
+      "ep.origin": options.origin
     };
     if (eventParams) {
       for (let key in eventParams) {
@@ -306,15 +313,16 @@ class FirebaseAnalyticsJS {
    * through the Google Measurement API v2.
    */
   static parseUserProperty(
+    options: FirebaseAnalyticsJSOptions,
     userPropertyName: string,
-    userPropertyValue: any,
-    options: FirebaseAnalyticsJSOptions
+    userPropertyValue: any
   ): string {
     if (
       !userPropertyName.length ||
       userPropertyName.length > 24 ||
       userPropertyName[0] === "_" ||
       !userPropertyName.match(/^[A-Za-z_]+$/) ||
+      userPropertyName === "user_id" ||
       userPropertyName.startsWith("firebase_") ||
       userPropertyName.startsWith("google_") ||
       userPropertyName.startsWith("ga_")
@@ -345,8 +353,11 @@ class FirebaseAnalyticsJS {
     eventName: string,
     eventParams?: { [key: string]: any }
   ): Promise<void> {
-    console.log("logEvent: ", eventName, eventParams);
-    const event = FirebaseAnalyticsJS.parseEvent(eventName, eventParams);
+    const event = FirebaseAnalyticsJS.parseEvent(
+      this.options,
+      eventName,
+      eventParams
+    );
     if (!this.enabled) return;
     return this.addEvent(event);
   }
@@ -365,13 +376,13 @@ class FirebaseAnalyticsJS {
     screenName?: string,
     screenClassOverride?: string
   ): Promise<void> {
-    if (!this.enabled) return;
-    const isChanged = this.screenName !== screenName;
-    this.screenName = screenName || undefined;
-    // https://developers.google.com/analytics/devguides/collection/analyticsjs/screens
-    if (isChanged) {
-      await this.logEvent("screenview");
+    if (screenName && screenName.length > 100) {
+      throw new Error(
+        "Invalid screen-name specified. Should contain 1 to 100 characters. Set to undefined to clear the current screen name."
+      );
     }
+    if (!this.enabled) return;
+    this.screenName = screenName || undefined;
   }
 
   /**
@@ -389,13 +400,12 @@ class FirebaseAnalyticsJS {
     [key: string]: any;
   }): Promise<void> {
     if (!this.enabled) return;
-    console.log(`setUserProperties: ${userProperties}`);
     for (let name in userProperties) {
       const val = userProperties[name];
       const key = FirebaseAnalyticsJS.parseUserProperty(
+        this.options,
         name,
-        val,
-        this.options
+        val
       );
       if (val === null || val === undefined) {
         if (this.userProperties) {
@@ -406,6 +416,16 @@ class FirebaseAnalyticsJS {
         this.userProperties[key] = val;
       }
     }
+  }
+
+  /**
+   * Clears all analytics data for this instance.
+   */
+  async resetAnalyticsData() {
+    this.clearEvents();
+    this.screenName = undefined;
+    this.userId = undefined;
+    this.userProperties = undefined;
   }
 }
 
