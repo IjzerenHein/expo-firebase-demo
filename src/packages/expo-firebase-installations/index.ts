@@ -1,1 +1,1 @@
-export * from "./ExpoFirebaseFunctions";
+export * from "./ExpoFirebaseInstallations";
