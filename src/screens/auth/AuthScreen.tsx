@@ -31,7 +31,14 @@ export default class AuthScreen extends React.Component<PropsType> {
         <ListSeparator label="Current user" />
         <ListItem label={"Display name"} value={currentUser.displayName} />
         <ListItem label={"Email"} value={currentUser.email} />
-        <ListItem label={"Provider Id"} value={currentUser.providerId} />
+        <ListItem label={"Email verified"} value={currentUser.emailVerified} />
+        <ListItem label={"Phone number"} value={currentUser.phoneNumber} />
+        <ListItem
+          label="Provider(s)"
+          value={currentUser.providerData
+            .map(({ providerId }) => providerId)
+            .join(", ")}
+        />
         {/*<ListSeparator label="Actions" />*/}
         <Button
           style={styles.button}
