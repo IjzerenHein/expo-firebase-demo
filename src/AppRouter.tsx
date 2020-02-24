@@ -19,6 +19,7 @@ import MessagingScreen from "./screens/messaging/MessagingScreen";
 import PerformanceScreen from "./screens/performance/PerformanceScreen";
 import TestScreen from "./screens/test/TestScreen";
 import FaceDetectorScreen from "./screens/mlvision/FaceDetectorScreen";
+import { firebase } from "./firebase";
 
 const RootStack = createStackNavigator();
 const MainStack = createStackNavigator();
@@ -108,9 +109,42 @@ function MainStackScreen() {
   );
 }
 
+const getActiveRouteName = state => {
+  const route = state.routes[state.index];
+  return route.state
+    ? getActiveRouteName(route.state) // Dive into nested navigators
+    : route.name;
+};
+
 function App() {
+  const routeNameRef = React.useRef();
+  const navigationRef = React.useRef();
+
   return (
-    <NavigationNativeContainer>
+    <NavigationNativeContainer
+      ref={navigationRef}
+      onStateChange={state => {
+        const previousRouteName = routeNameRef.current;
+        const currentRouteName = getActiveRouteName(state);
+
+        // Log screen-change when routes have changed
+        if (previousRouteName !== currentRouteName) {
+          console.debug("Screen changed: ", currentRouteName);
+          if (firebase.analytics) {
+            firebase
+              .analytics()
+              .setCurrentScreen(currentRouteName, currentRouteName + "whoop");
+            firebase.analytics().logEvent("screen_view", {
+              app_name: "expo-firebase-demo",
+              screen_name: currentRouteName
+            });
+          }
+        }
+
+        // Save the current route name for later comparision
+        routeNameRef.current = currentRouteName;
+      }}
+    >
       <RootStack.Navigator
         mode="modal"
         headerMode="none"
