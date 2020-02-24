@@ -1,4 +1,4 @@
-import config from "./config";
+import config from "../config";
 import * as firebase from "firebase/app";
 import { initFirestorter } from "firestorter";
 
@@ -13,7 +13,7 @@ import "firebase/messaging";
 import "firebase/performance";
 
 // Initialize Firebase
-firebase.initializeApp(config);
+firebase.initializeApp(config.firebase);
 
 initFirestorter({
   firebase
