@@ -10,6 +10,7 @@ type PropsType = {
   onPress?: () => any;
   disabled?: boolean;
   editable?: boolean;
+  textInput?: React.ComponentProps<typeof TextInput>;
   onChangeValue?: (value: string) => Promise<any>;
   accessory?: React.ReactNode;
 };
@@ -57,7 +58,15 @@ export class ListItem extends React.Component<PropsType> {
   };
 
   render() {
-    const { label, value, editable, onPress, disabled, accessory } = this.props;
+    const {
+      label,
+      value,
+      editable,
+      onPress,
+      disabled,
+      accessory,
+      textInput
+    } = this.props;
     const { inputValue, isFocused } = this.state;
     const resolvedValue = isFocused ? inputValue : value;
     return (
@@ -67,9 +76,10 @@ export class ListItem extends React.Component<PropsType> {
         >
           {editable ? (
             <TextInput
-              value={resolvedValue}
               style={styles.textInput}
               placeholder={label}
+              {...textInput}
+              value={resolvedValue}
               onFocus={this.onFocusInput}
               onChangeText={this.onChangeText}
               onBlur={this.onBlurInput}

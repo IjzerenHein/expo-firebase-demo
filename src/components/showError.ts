@@ -1,4 +1,4 @@
-import { ScrollView, Alert, StyleSheet } from "react-native";
+import { Alert } from "react-native";
 
 export function showError(error) {
   Alert.alert("expo-firebase-demo", error.message);

@@ -136,23 +136,11 @@ export default class SignInScreen extends React.Component<PropsType> {
   };
 
   render() {
+    const { navigation } = this.props;
     const { inProgress } = this.state;
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.headerItem}
-            onPress={this.onPressClose}
-          >
-            <Icon
-              style={styles.close}
-              name="ios-close"
-              color={Colors.darkGray}
-            />
-          </TouchableOpacity>
-          <Heading2 style={styles.title}>{"Sign In"}</Heading2>
-          <View style={styles.headerItem} />
-        </View>
+        <ModalHeader navigation={navigation} title="Sign In" />
         <Button
           style={styles.button}
           color={Colors.facebookBlue}
