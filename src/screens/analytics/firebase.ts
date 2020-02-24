@@ -9,6 +9,7 @@ export default {
     analytics =
       analytics ||
       new FirebaseAnalyticsJS(config.firebase, {
+        strictNativeEmulation: true,
         clientId: Constants.sessionId,
         appName: Constants.manifest.name,
         appVersion: Constants.manifest.version
