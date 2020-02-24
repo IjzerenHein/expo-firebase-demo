@@ -8,6 +8,7 @@ import {
 import HomeScreen from "./screens/HomeScreen";
 import AuthScreen from "./screens/auth/AuthScreen";
 import SignInScreen from "./screens/auth/SignInScreen";
+import SignInPhoneNumberScreen from "./screens/auth/SignInPhoneNumberScreen";
 import TodoListsScreen from "./screens/firestore/TodoListsScreen";
 import TodoListScreen from "./screens/firestore/TodoListScreen";
 import FilesScreen from "./screens/storage/FilesScreen";
@@ -161,6 +162,10 @@ function App() {
         />
 
         <RootStack.Screen name="SignIn" component={SignInScreen} />
+        <RootStack.Screen
+          name="SignInPhoneNumber"
+          component={SignInPhoneNumberScreen}
+        />
       </RootStack.Navigator>
     </NavigationNativeContainer>
   );

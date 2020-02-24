@@ -1,14 +1,12 @@
 import * as React from "react";
 import { StyleSheet, View, Alert, Dimensions, Platform } from "react-native";
 import {
-  Heading2,
   Margins,
   Button,
-  Icon,
   Colors,
-  Rounding
+  Rounding,
+  ModalHeader
 } from "../../components";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { firebase } from "../../firebase";
 import config from "../../config";
 import * as Facebook from "expo-facebook";
@@ -26,10 +24,6 @@ type StateType = {
 export default class SignInScreen extends React.Component<PropsType> {
   state = {
     inProgress: "none"
-  };
-
-  onPressClose = () => {
-    this.props.navigation.goBack();
   };
 
   /**
@@ -106,6 +100,14 @@ export default class SignInScreen extends React.Component<PropsType> {
   };
 
   /**
+   * Phone number sign in.
+   */
+  onPressPhoneNumber = async () => {
+    const { navigation } = this.props;
+    navigation.navigate("SignInPhoneNumber");
+  };
+
+  /**
    * Apple sign in.
    */
   onPressApple = async () => {
@@ -158,6 +160,14 @@ export default class SignInScreen extends React.Component<PropsType> {
           disabled={inProgress !== "none"}
           onPress={this.onPressGoogle}
         />
+        <Button
+          style={styles.button}
+          color={Colors.white}
+          textColor={Colors.black}
+          label={"Sign in with Phone number"}
+          disabled={inProgress !== "none"}
+          onPress={this.onPressPhoneNumber}
+        />
         {Platform.OS === "ios" ? (
           <AppleAuthentication.AppleAuthenticationButton
             buttonType={
@@ -192,22 +202,6 @@ const styles = StyleSheet.create({
     flex: 1
     //backgroundColor: Colors.blue
   },
-  header: {
-    height: 66,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  headerItem: {
-    width: Margins.regular + 32 + Margins.regular,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  title: {
-    textAlign: "center"
-    //color: Colors.white
-  },
-  close: {},
   button: {
     margin: Margins.regular,
     marginBottom: 0
