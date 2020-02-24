@@ -133,11 +133,11 @@ function App() {
           if (firebase.analytics) {
             firebase
               .analytics()
-              .setCurrentScreen(currentRouteName, currentRouteName + "whoop");
-            firebase.analytics().logEvent("screen_view", {
+              .setCurrentScreen(currentRouteName, currentRouteName);
+            /*firebase.analytics().logEvent("screen_view", {
               app_name: "expo-firebase-demo",
               screen_name: currentRouteName
-            });
+            });*/
           }
         }
 
