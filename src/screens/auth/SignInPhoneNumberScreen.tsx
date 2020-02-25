@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, ScrollView, Dimensions, AsyncStorage } from "react-native";
+import { StyleSheet, ScrollView, AsyncStorage } from "react-native";
 import {
   ListItem,
   ListSeparator,
@@ -9,12 +9,7 @@ import {
   ModalHeader
 } from "../../components";
 import { firebase } from "../../firebase";
-import {
-  ReCaptcha,
-  FirebaseRecaptchaVerifier,
-  FirebaseRecaptcha,
-  FirebaseRecaptchaVerifierModal
-} from "./recaptcha";
+import { FirebaseRecaptchaVerifierModal } from "./recaptcha";
 
 type PropsType = {
   navigation: any;
@@ -22,7 +17,6 @@ type PropsType = {
 type StateType = {
   inProgress: "none" | "sendVerificationCode" | "confirmVerificationCode";
   phoneNumber: string;
-  //recaptchaToken: string;
   verificationId: string;
   verificationCode: string;
 };
@@ -33,19 +27,11 @@ export default class SignInPhoneNumberScreen extends React.Component<
 > {
   state: StateType = {
     inProgress: "none",
-    //phoneNumber: "+31651663732",
     phoneNumber: "",
-    //recaptchaToken: "",
     verificationId: "",
     verificationCode: ""
   };
   recaptchaVerifier: FirebaseRecaptchaVerifierModal;
-
-  /*onVerifyRecaptcha = (token: string) => {
-    this.setState({
-      recaptchaToken: token
-    });
-  };*/
 
   async componentDidMount() {
     const verificationId = await AsyncStorage.getItem(
@@ -58,7 +44,7 @@ export default class SignInPhoneNumberScreen extends React.Component<
     }
   }
 
-  onChangePhoneNumber = (phoneNumber: string) => {
+  onChangePhoneNumber = async (phoneNumber: string) => {
     this.setState({
       phoneNumber
     });
@@ -70,11 +56,9 @@ export default class SignInPhoneNumberScreen extends React.Component<
 
   onPressSendVerificationCode = async () => {
     try {
-      const { navigation } = this.props;
-      const { phoneNumber, recaptchaToken } = this.state;
+      const { phoneNumber } = this.state;
       this.setState({ inProgress: "sendVerificationCode" });
       var provider = new firebase.auth.PhoneAuthProvider();
-      //const applicationVerifier = new FirebaseRecaptchaVerifier(recaptchaToken);
       const verificationId = await provider.verifyPhoneNumber(
         phoneNumber,
         this.recaptchaVerifier
@@ -113,6 +97,8 @@ export default class SignInPhoneNumberScreen extends React.Component<
       const authResult = await firebase.auth().signInWithCredential(credential);
       console.log("authResult: ", authResult);
 
+      AsyncStorage.removeItem("firebasePhoneAuthVerificationId");
+
       navigation.goBack();
       navigation.goBack();
     } catch (err) {
@@ -128,7 +114,6 @@ export default class SignInPhoneNumberScreen extends React.Component<
       inProgress,
       verificationId,
       verificationCode
-      //recaptchaToken
     } = this.state;
     return (
       <ScrollView style={styles.container}>
@@ -142,42 +127,17 @@ export default class SignInPhoneNumberScreen extends React.Component<
           }}
           onChangeValue={this.onChangePhoneNumber}
         />
-        {/*<ReCaptcha
-          containerStyle={
-            recaptchaToken ? styles.recaptchaSmall : styles.recaptchaLarge
-          }
-          url={"https://expo-firebase-demo.firebaseapp.com"}
-          action={"verify"}
-          reCaptchaType={2}
-          config={firebase.app().options}
-          onExecute={this.onVerifyRecaptcha}
-        />*/}
-
         <FirebaseRecaptchaVerifierModal
           ref={this.onSetRecaptchaVerifier}
           config={firebase.app().options}
         />
-        {
-          /*-!recaptchaToken ? (
-          <React.Fragment>
-            <ListSeparator label="Verify that you are not a bot" />
-            <FirebaseRecaptcha
-              style={styles.recaptcha}
-              containerStyle={styles.recaptchaContainer}
-              config={firebase.app().options}
-              onVerify={this.onVerifyRecaptcha}
-            />
-          </React.Fragment>
-        ) : (*/
-          <Button
-            style={styles.button}
-            label="Send verification code"
-            onPress={this.onPressSendVerificationCode}
-            loading={inProgress === "sendVerificationCode"}
-            //disabled={!recaptchaToken}
-          />
-          //)
-        }
+        <Button
+          style={styles.button}
+          label="Send verification code"
+          onPress={this.onPressSendVerificationCode}
+          disabled={!phoneNumber}
+          loading={inProgress === "sendVerificationCode"}
+        />
         {verificationId ? (
           <React.Fragment>
             <ListSeparator label="Verification" />
@@ -211,20 +171,5 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: Margins.regular
-  },
-  recaptcha: {
-    height: Dimensions.get("window").height
-  },
-  recaptchaContainer: {
-    width: "100%",
-    height: "100%"
-  },
-  recaptchaSmall: {
-    width: "100%",
-    height: 100
-  },
-  recaptchaLarge: {
-    width: "100%",
-    height: "100%"
   }
 });
