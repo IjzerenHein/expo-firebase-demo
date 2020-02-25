@@ -1,26 +1,30 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { DEFAULT_WEB_APP_OPTIONS, IFirebaseOptions } from "expo-firebase-core";
 import { WebView } from "react-native-webview";
 
 type PropsType = React.ComponentProps<typeof WebView> & {
-  config: object;
+  firebaseConfig?: IFirebaseOptions;
+  firebaseVersion?: string;
   onVerify: (token: string) => any;
 };
 
-function getWebviewSource(config, version?: string) {
-  version = version || "7.9.1";
+function getWebviewSource(
+  firebaseConfig: IFirebaseOptions,
+  firebaseVersion?: string
+) {
+  firebaseVersion = firebaseVersion || "7.9.1";
   return {
-    baseUrl: `https://${config.authDomain}`,
+    baseUrl: `https://${firebaseConfig.authDomain}`,
     html: `
 <!DOCTYPE html><html>
 <head>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="HandheldFriendly" content="true">
-    <script src="https://www.gstatic.com/firebasejs/${version}/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/${version}/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/${firebaseVersion}/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/${firebaseVersion}/firebase-auth.js"></script>
     <script type="text/javascript">firebase.initializeApp(${JSON.stringify(
-      config
+      firebaseConfig
     )});</script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
 </head>
@@ -42,25 +46,22 @@ function getWebviewSource(config, version?: string) {
   };
 }
 
-export function FirebaseRecaptcha(props: PropsType) {
-  const { config, onVerify, ...otherProps } = props;
+export default function FirebaseAuthRecaptcha(props: PropsType) {
+  const { firebaseConfig, firebaseVersion, onVerify, ...otherProps } = props;
   return (
     <WebView
-      //ref={this.onSetRef}
       javaScriptEnabled
       automaticallyAdjustContentInsets
       scalesPageToFit
       startInLoadingState
       mixedContentMode={"always"}
-      source={getWebviewSource(config)}
+      source={getWebviewSource(firebaseConfig, firebaseVersion)}
       onMessage={event => onVerify(event.nativeEvent.data)}
-      //onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest}
-      //onNavigationStateChange={this.onNavigationStateChange}
       {...otherProps}
     />
   );
 }
 
-const styles = StyleSheet.create({
-  container: {}
-});
+FirebaseAuthRecaptcha.defaultProps = {
+  firebaseConfig: DEFAULT_WEB_APP_OPTIONS
+};

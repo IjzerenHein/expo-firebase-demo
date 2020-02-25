@@ -9,7 +9,7 @@ import {
   ModalHeader
 } from "../../components";
 import { firebase } from "../../firebase";
-import { FirebaseRecaptchaVerifierModal } from "./recaptcha";
+import * as FirebaseAuth from "./recaptcha";
 
 type PropsType = {
   navigation: any;
@@ -31,7 +31,7 @@ export default class SignInPhoneNumberScreen extends React.Component<
     verificationId: "",
     verificationCode: ""
   };
-  recaptchaVerifier: FirebaseRecaptchaVerifierModal;
+  recaptchaVerifier: FirebaseAuth.IFirebaseAuthApplicationVerifier;
 
   async componentDidMount() {
     const verificationId = await AsyncStorage.getItem(
@@ -58,7 +58,7 @@ export default class SignInPhoneNumberScreen extends React.Component<
     try {
       const { phoneNumber } = this.state;
       this.setState({ inProgress: "sendVerificationCode" });
-      var provider = new firebase.auth.PhoneAuthProvider();
+      const provider = new firebase.auth.PhoneAuthProvider();
       const verificationId = await provider.verifyPhoneNumber(
         phoneNumber,
         this.recaptchaVerifier
@@ -130,9 +130,9 @@ export default class SignInPhoneNumberScreen extends React.Component<
           }}
           onChangeValue={this.onChangePhoneNumber}
         />
-        <FirebaseRecaptchaVerifierModal
+        <FirebaseAuth.RecaptchaVerifierModal
           ref={this.onSetRecaptchaVerifier}
-          config={firebase.app().options}
+          firebaseConfig={firebase.app().options}
         />
         <Button
           style={styles.button}

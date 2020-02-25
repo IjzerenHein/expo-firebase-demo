@@ -1,9 +1,7 @@
-export interface IFirebaseRecaptchaVerifier {
-  readonly type: string;
-  verify(): Promise<string>;
-}
+import { IFirebaseAuthApplicationVerifier } from "./FirebaseAuthRecaptcha.types";
 
-export class FirebaseRecaptchaVerifier implements IFirebaseRecaptchaVerifier {
+export default class FirebaseAuthRecaptchaVerifier
+  implements IFirebaseAuthApplicationVerifier {
   private token: string;
 
   constructor(token: string) {

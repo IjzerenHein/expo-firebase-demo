@@ -7,12 +7,11 @@ import {
   SafeAreaView,
   Text
 } from "react-native";
-// import { Appearance } from 'react-native-appearance';
-import { IFirebaseRecaptchaVerifier } from "./FirebaseRecaptchaVerifier";
-import { FirebaseRecaptcha } from "./FirebaseRecaptcha";
+import { CodedError } from "@unimodules/core";
+import { IFirebaseAuthApplicationVerifier } from "./FirebaseAuthRecaptcha.types";
+import FirebaseAuthRecaptcha from "./FirebaseAuthRecaptcha";
 
-type PropsType = {
-  config: object;
+type PropsType = React.ComponentProps<typeof FirebaseAuthRecaptcha> & {
   title?: string;
   cancelLabel?: string;
 };
@@ -23,9 +22,9 @@ type StateType = {
   reject?: (error: Error) => void;
 };
 
-export class FirebaseRecaptchaVerifierModal
+export default class FirebaseRecaptchaVerifierModal
   extends React.Component<PropsType, StateType>
-  implements IFirebaseRecaptchaVerifier {
+  implements IFirebaseAuthApplicationVerifier {
   static defaultProps = {
     title: "reCAPTCHA",
     cancelLabel: "Cancel"
@@ -66,7 +65,9 @@ export class FirebaseRecaptchaVerifierModal
   cancel = () => {
     const { reject } = this.state;
     if (reject) {
-      reject(new Error("Cancelled by user"));
+      reject(
+        new CodedError("ERR_FIREBASE_RECAPTCHA_CANCEL", "Cancelled by user")
+      );
     }
     this.setState({
       visible: false
@@ -74,7 +75,7 @@ export class FirebaseRecaptchaVerifierModal
   };
 
   render() {
-    const { config, title, cancelLabel } = this.props;
+    const { title, cancelLabel, ...otherProps } = this.props;
     const { visible } = this.state;
     return (
       <Modal
@@ -90,10 +91,10 @@ export class FirebaseRecaptchaVerifierModal
               <Button title={cancelLabel} onPress={this.cancel} />
             </View>
           </View>
-          <FirebaseRecaptcha
+          <FirebaseAuthRecaptcha
             style={styles.container}
-            config={config}
             onVerify={this.onVerify}
+            {...otherProps}
           />
         </SafeAreaView>
       </Modal>
