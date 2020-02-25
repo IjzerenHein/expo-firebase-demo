@@ -7,6 +7,7 @@ import { Switch } from "./Switch";
 type PropsType = {
   label: string;
   value?: string | boolean;
+  valueColor?: string;
   onPress?: () => any;
   disabled?: boolean;
   editable?: boolean;
@@ -61,6 +62,7 @@ export class ListItem extends React.Component<PropsType> {
     const {
       label,
       value,
+      valueColor,
       editable,
       onPress,
       disabled,
@@ -93,7 +95,7 @@ export class ListItem extends React.Component<PropsType> {
             ) : (
               <Heading2
                 style={styles.value}
-                color={Colors.darkYellow}
+                color={valueColor || Colors.darkYellow}
                 numberOfLines={1}
               >
                 {value}

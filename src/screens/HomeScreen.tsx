@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet, View } from "react-native";
-import { ListItem, ListSeparator } from "../components";
+import { ListItem, ListSeparator, Colors } from "../components";
 import { firebase } from "../firebase";
 import { getTestModules } from "../tests";
 
@@ -44,16 +44,27 @@ export default class HomeScreen extends React.Component<PropsType> {
     }
   };
 
+  getAuthenticationValue(currentUser) {
+    if (!currentUser) return "Not Signed in";
+    return (
+      'Signed in with "' +
+      currentUser.providerData.map(({ providerId }) => providerId).join(", ") +
+      '"'
+    );
+  }
+
   render() {
     const { navigation } = this.props;
     const currentUser = firebase.auth ? firebase.auth().currentUser : undefined;
+
     return (
       <View style={styles.container}>
         <ListItem label={"Run tests"} onPress={this.onPressRunTests} />
         <ListSeparator label="Interactive" />
         <ListItem
           label={"Authentication"}
-          value={currentUser ? currentUser.displayName : "Not signed in"}
+          value={this.getAuthenticationValue(currentUser)}
+          valueColor={!currentUser ? Colors.darkGray : undefined}
           onPress={this.onPressAuth}
           disabled={!firebase.auth}
         />
