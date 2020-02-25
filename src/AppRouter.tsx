@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Colors } from "./components";
-import { NavigationNativeContainer } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import {
   createStackNavigator,
   TransitionPresets
@@ -122,7 +122,7 @@ function App() {
   const navigationRef = React.useRef();
 
   return (
-    <NavigationNativeContainer
+    <NavigationContainer
       ref={navigationRef}
       onStateChange={state => {
         const previousRouteName = routeNameRef.current;
@@ -167,7 +167,7 @@ function App() {
           component={SignInPhoneNumberScreen}
         />
       </RootStack.Navigator>
-    </NavigationNativeContainer>
+    </NavigationContainer>
   );
 }
 
