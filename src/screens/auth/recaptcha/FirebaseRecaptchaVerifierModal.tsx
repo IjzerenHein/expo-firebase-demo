@@ -7,13 +7,14 @@ import {
   SafeAreaView,
   Text
 } from "react-native";
+// import { Appearance } from 'react-native-appearance';
 import { IFirebaseRecaptchaVerifier } from "./FirebaseRecaptchaVerifier";
 import { FirebaseRecaptcha } from "./FirebaseRecaptcha";
 
 type PropsType = {
   config: object;
   title?: string;
-  closeLabel?: string;
+  cancelLabel?: string;
 };
 type StateType = {
   token: string;
@@ -27,7 +28,7 @@ export class FirebaseRecaptchaVerifierModal
   implements IFirebaseRecaptchaVerifier {
   static defaultProps = {
     title: "reCAPTCHA",
-    closeLabel: "Close"
+    cancelLabel: "Cancel"
   };
 
   state: StateType = {
@@ -62,10 +63,10 @@ export class FirebaseRecaptchaVerifierModal
     });
   };
 
-  close = () => {
+  cancel = () => {
     const { reject } = this.state;
     if (reject) {
-      reject(new Error("Closed by user"));
+      reject(new Error("Cancelled by user"));
     }
     this.setState({
       visible: false
@@ -73,18 +74,21 @@ export class FirebaseRecaptchaVerifierModal
   };
 
   render() {
-    const { config, title, closeLabel } = this.props;
+    const { config, title, cancelLabel } = this.props;
     const { visible } = this.state;
     return (
       <Modal
         visible={visible}
         animationType="slide"
-        onRequestClose={this.close}
+        presentationStyle="pageSheet"
+        onRequestClose={this.cancel}
       >
         <SafeAreaView style={styles.container}>
           <View style={styles.header}>
-            <Text>{title}</Text>
-            <Button title={closeLabel} onPress={this.close} />
+            <Text style={styles.title}>{title}</Text>
+            <View style={styles.cancel}>
+              <Button title={cancelLabel} onPress={this.cancel} />
+            </View>
           </View>
           <FirebaseRecaptcha
             style={styles.container}
@@ -102,10 +106,20 @@ const styles = StyleSheet.create({
     flex: 1
   },
   header: {
-    justifyContent: "space-between",
+    backgroundColor: "#FBFBFB",
+    height: 44,
     flexDirection: "row",
-    marginHorizontal: 20,
-    marginVertical: 4,
-    alignItems: "center"
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomColor: "#CECECE",
+    borderBottomWidth: StyleSheet.hairlineWidth
+  },
+  cancel: {
+    position: "absolute",
+    left: 8,
+    justifyContent: "center"
+  },
+  title: {
+    fontWeight: "bold"
   }
 });
