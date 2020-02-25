@@ -15,9 +15,11 @@ const config = {
   },
   google: {
     iosClientId:
-      "192261076942-e5gntvtofv8c6sn5fe1cgajoa56ar3ou.apps.googleusercontent.com",
-    androidClientId: "TODO",
-    iosStandaloneAppClientId: "TODO",
+      "192261076942-h3ic7gadeuh17qqk79qi6k572vsqeiq7.apps.googleusercontent.com",
+    androidClientId:
+      "192261076942-1c2scbuskb21kv0kj1dkaugb0bn97hqu.apps.googleusercontent.com",
+    iosStandaloneAppClientId:
+      "192261076942-p337pc6jvgbto403bq7kcm46vqt8osvj.apps.googleusercontent.com",
     androidStandaloneAppClientId: "TODO"
   }
 };

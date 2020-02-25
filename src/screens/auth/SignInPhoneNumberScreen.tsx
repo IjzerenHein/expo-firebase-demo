@@ -123,7 +123,10 @@ export default class SignInPhoneNumberScreen extends React.Component<
           value={phoneNumber}
           editable
           textInput={{
-            autoFocus: true
+            autoFocus: true,
+            autoCompleteType: "tel",
+            keyboardType: "phone-pad",
+            textContentType: "telephoneNumber"
           }}
           onChangeValue={this.onChangePhoneNumber}
         />

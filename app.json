@@ -17,6 +17,7 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
+    "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
       "usesAppleSignIn": true,
