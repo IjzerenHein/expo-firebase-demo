@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Platform } from "react-native";
 import { Heading2 } from "./Text";
 import { Colors, Margins } from "./Styles";
 import { Icon } from "./Icon";
@@ -19,7 +19,11 @@ export function ModalHeader(props: PropsType) {
         style={styles.headerItem}
         onPress={() => navigation.goBack()}
       >
-        <Icon style={styles.close} name="ios-close" color={Colors.darkGray} />
+        {Platform.OS === "android" ? (
+          <View style={styles.headerItem} />
+        ) : (
+          <Icon style={styles.close} name="ios-close" color={Colors.darkGray} />
+        )}
       </TouchableOpacity>
       <Heading2 style={styles.title}>{title}</Heading2>
       <View style={styles.headerItem} />
