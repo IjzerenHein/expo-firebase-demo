@@ -21,7 +21,7 @@ Add the `<FirebaseAuth.RecaptchaVerifierModal>` component to your screen and sto
   firebaseConfig={firebase.app().options} />
 ```
 
-Pass in the `recaptchaVerifier` ref to `verifyPhoneNumber`. This will automatically show the modal with a reCAPTCHA widget inside when calling `verifyPhoneNumber`.
+Pass in the `recaptchaVerifier` ref to `verifyPhoneNumber`. This will automatically show the reCAPTCHA modal when calling `verifyPhoneNumber`.
 
 ```ts
 const phoneProvider = new firebase.auth.PhoneAuthProvider();
@@ -187,12 +187,12 @@ The reCAPTCHA v3 widget displayed inside a web-view.
 
 - **firebaseConfig (IFirebaseOptions)** -- Firebase web configuration.
 - **firebaseVersion (string)** -- Optional version of the Firebase JavaScript SDK to load in the web-view. You can use this to load a custom or newer version. For example `version="6.8.0"`. 
-- **onVerify (function)** -- A callback that is invoked when reCAPTCHA has verified that the user is not a bot. The callback is provided with a string which contains the `recaptchaToken`.
+- **onVerify (function)** -- A callback that is invoked when reCAPTCHA has verified that the user is not a bot. The callback is provided with the reCAPTCHA token string. Example `onVerify={(recaptchaToken: string) => this.setState({recaptchaToken})}`.
 
 
 ### `FirebaseAuth.IFirebaseAuthApplicationVerifier`
 
-Interface describing domain verification and abuse prevention.
+Interface describing a domain verification and abuse prevention verifier.
 
 ```ts
 interface IFirebaseAuthApplicationVerifier {
@@ -204,7 +204,7 @@ interface IFirebaseAuthApplicationVerifier {
 
 ### `FirebaseAuth.RecaptchaVerifier`
 
-A helper class implementing the `IFirebaseAuthApplicationVerifier` interface, which can be used when creating a customized reCAPTCHA workflow. The class takes a single argument in the constructor which should be a valid reCAPTCHA token.
+A helper class implementing the `IFirebaseAuthApplicationVerifier` interface, which can be used when creating a customized reCAPTCHA workflow. The class takes a single `string` argument in the constructor which should be a valid reCAPTCHA token.
 
 #### Example
 
