@@ -60,7 +60,7 @@ export default class PhoneAuthScreen extends React.Component {
 
   // Store a reference to the ReCAPTCHA verifier model.
   // The FirebaseRecaptchaVerifierModal class conforms to the
-  // IFirebaseRecaptchaVerifier interface so we can use it
+  // IFirebaseAuthApplicationVerifier interface so we can use it
   // directly with `verifyPhoneNumber`.
   recaptchaVerifier: FirebaseAuth.IFirebaseAuthApplicationVerifier;
 
@@ -110,7 +110,7 @@ export default class PhoneAuthScreen extends React.Component {
 
 ## Customizing the appearance
 
-`<FirebaseAuth.RecaptchaVerifierModal>` has limited customisation options. You cannot change its appearance, but you can for instance set the **title** or the **cancel-label**.
+`<FirebaseAuth.RecaptchaVerifierModal>` has limited customisation options. You cannot change its appearance, but you can change the **title** and the **cancel-label**.
 
 ```tsx
 <FirebaseAuth.RecaptchaVerifierModal
