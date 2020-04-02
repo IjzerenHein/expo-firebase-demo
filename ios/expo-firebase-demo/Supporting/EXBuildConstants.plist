@@ -14,8 +14,8 @@
 	<key>STANDALONE_CONTEXT_TYPE</key>
 	<string>user</string>
 	<key>TEMPORARY_SDK_VERSION</key>
-	<string>36.0.0</string>
+	<string>UNVERSIONED</string>
 	<key>developmentUrl</key>
-	<string>expe1a18d853b7148a3804ce28e93c3a1a5://10.10.200.202:19000</string>
+	<string>expe1a18d853b7148a3804ce28e93c3a1a5://192.168.1.10:19000</string>
 </dict>
 </plist>
