@@ -19,7 +19,7 @@ import RemoteConfigScreen from "./screens/remoteconfig/RemoteConfigScreen";
 import MessagingScreen from "./screens/messaging/MessagingScreen";
 import PerformanceScreen from "./screens/performance/PerformanceScreen";
 import TestScreen from "./screens/test/TestScreen";
-import FaceDetectorScreen from "./screens/mlvision/FaceDetectorScreen";
+//import FaceDetectorScreen from "./screens/mlvision/FaceDetectorScreen";
 import { firebase } from "./firebase";
 
 const RootStack = createStackNavigator();
@@ -101,11 +101,11 @@ function MainStackScreen() {
         component={TestScreen}
         options={{ title: "Tests" }}
       />
-      <MainStack.Screen
+      {/*<MainStack.Screen
         name="FaceDetector"
         component={FaceDetectorScreen}
         options={{ title: "Face Detector" }}
-      />
+      />*/}
     </MainStack.Navigator>
   );
 }

@@ -1,6 +1,7 @@
 import * as React from "react";
-import { DEFAULT_WEB_APP_OPTIONS, IFirebaseOptions } from "expo-firebase-core";
 import { WebView } from "react-native-webview";
+
+type IFirebaseOptions = any;
 
 type PropsType = React.ComponentProps<typeof WebView> & {
   firebaseConfig?: IFirebaseOptions;
@@ -61,7 +62,3 @@ export default function FirebaseAuthRecaptcha(props: PropsType) {
     />
   );
 }
-
-FirebaseAuthRecaptcha.defaultProps = {
-  firebaseConfig: DEFAULT_WEB_APP_OPTIONS
-};

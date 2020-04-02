@@ -2637,9 +2637,6 @@ expo-error-recovery@~1.0.0:
   resolved "https://registry.yarnpkg.com/expo-error-recovery/-/expo-error-recovery-1.0.0.tgz#2ca9d59fcd16c5c881af877993731056f2d46afe"
   integrity sha512-xnxciNEpGmwxx8BAE2A9fd9HxtzWtz8p9mikKU+EfWgOXaYD3FJwgbFoVLD2pm4QUarxwOcic76rcwg+0cNnGg==
 
-"expo-face-detector@file:../expo/packages/expo-face-detector":
-  version "8.0.0"
-
 expo-facebook@~8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/expo-facebook/-/expo-facebook-8.0.0.tgz#d337a56459a3833488a879b925349b30c06a0afd"
@@ -2651,12 +2648,6 @@ expo-file-system@~8.0.0:
   integrity sha512-mi84jt3EHVUfxu5eGOikNuRDi7+5daCFSP9LVgk5aQz8Oepo143vnH/+WE4lQEg+u8dB6EmmCWncyc2Fklxv7A==
   dependencies:
     uuid-js "^0.7.5"
-
-"expo-firebase-analytics@file:.yalc/expo-firebase-analytics":
-  version "3.0.0-8517b8c5"
-
-"expo-firebase-core@file:.yalc/expo-firebase-core":
-  version "1.0.0-28d56b63"
 
 expo-font@~8.0.0:
   version "8.0.0"

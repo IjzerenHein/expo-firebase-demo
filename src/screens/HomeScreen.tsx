@@ -106,6 +106,7 @@ export default class HomeScreen extends React.Component<PropsType> {
         <ListItem
           label={"MLVision"}
           onPress={() => navigation.navigate("FaceDetector")}
+          disabled
         />
         {/*<ListSeparator label={"Not yet supported"} />
         <ListItem label={"Notifications"} disabled />
