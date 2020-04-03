@@ -28,7 +28,7 @@
     },
     "android": {
       "package": "nl.ijzerenhein.expofirebasedemo",
-      "googleServicesFile": "./google-services.json",
+      "googleServicesFile2": "./google-services.json",
       "publishBundlePath": "android/app/src/main/assets/shell-app.bundle",
       "publishManifestPath": "android/app/src/main/assets/shell-app-manifest.json"
     },
