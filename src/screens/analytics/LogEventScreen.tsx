@@ -5,7 +5,7 @@ import {
   Button,
   Margins,
   ListSeparator,
-  showError
+  showError,
 } from "../../components";
 import { firebase } from "../../firebase";
 import customTrackerFirebase from "./firebase";
@@ -29,7 +29,9 @@ type StateType = {
     | "logevent"
     | "setuserid"
     | "setuserproperties"
-    | "setcurrentscreen";
+    | "setcurrentscreen"
+    | "setanalyticscollectionenabled"
+    | "setdebugmodeenabled";
   firebase: any;
 };
 
@@ -37,20 +39,20 @@ const EVENTS = {
   add_to_cart: {
     title: "Expo Analytics",
     currency: "USD",
-    value: 10000
+    value: 10000,
   },
   begin_checkout: {
     currency: "USD",
     value: 10000,
-    coupon: "spring_fun"
+    coupon: "spring_fun",
   },
   event_name: {
     foo: "bar",
-    country: "NL"
+    country: "NL",
   },
   exception: {
     description: "Whoops",
-    fatal: false
+    fatal: false,
   },
   purchase: {
     transaction_id: "T12345",
@@ -58,34 +60,34 @@ const EVENTS = {
     value: 10000,
     coupon: "spring_fun",
     tax: 2.43,
-    shipping: 5.99
+    shipping: 5.99,
   },
   screen_view: {
-    screen_name: "Analytics Demo"
+    screen_name: "Analytics Demo",
   },
   search: {
-    search_term: "kweougel"
+    search_term: "kweougel",
   },
   sign_up: {
-    method: "Facebook"
+    method: "Facebook",
   },
   share: {
     method: "Twitter",
     content_type: "article",
-    content_id: "article-8704"
-  }
+    content_id: "article-8704",
+  },
 };
 
 const USERPROPS = {
   a: {
     age: 30,
-    sex: "male"
+    sex: "male",
   },
   b: {
     age: 60,
-    sex: "female"
+    sex: "female",
   },
-  c: {}
+  c: {},
 };
 
 const SCREENS = ["MainScreen", "DetailScreen", "ProfileScreen"];
@@ -103,13 +105,13 @@ export default class LogEventScreen extends React.Component<
     userProperties: USERPROPS.a,
     screenName: SCREENS[0],
     inProgress: "none",
-    firebase
+    firebase,
   };
 
   onPressCustomTracker = () => {
     this.setState({
       firebase:
-        this.state.firebase === firebase ? customTrackerFirebase : firebase
+        this.state.firebase === firebase ? customTrackerFirebase : firebase,
     });
   };
 
@@ -119,7 +121,7 @@ export default class LogEventScreen extends React.Component<
     const eventName = keys[idx];
     this.setState({
       eventName,
-      eventParams: EVENTS[eventName]
+      eventParams: EVENTS[eventName],
     });
   };
 
@@ -168,7 +170,7 @@ export default class LogEventScreen extends React.Component<
     const key = keys[idx];
     this.setState({
       userPropertiesKey: key,
-      userProperties: USERPROPS[key]
+      userProperties: USERPROPS[key],
     });
   };
 
@@ -188,7 +190,7 @@ export default class LogEventScreen extends React.Component<
     const { screenName } = this.state;
     const idx = (SCREENS.indexOf(screenName) + 1) % SCREENS.length;
     this.setState({
-      screenName: SCREENS[idx]
+      screenName: SCREENS[idx],
     });
   };
 
@@ -204,6 +206,30 @@ export default class LogEventScreen extends React.Component<
     }
   };
 
+  async setAnalyticsCollectionEnabled(enabled: boolean) {
+    try {
+      this.setState({ inProgress: "setanalyticscollectionenabled" });
+      const { firebase, screenName } = this.state;
+      await firebase.analytics().setAnalyticsCollectionEnabled(enabled);
+      this.setState({ inProgress: "none" });
+    } catch (err) {
+      this.setState({ inProgress: "none" });
+      showError(err);
+    }
+  }
+
+  async setDebugModeEnabled(enabled: boolean) {
+    try {
+      this.setState({ inProgress: "setdebugmodeenabled" });
+      const { firebase, screenName } = this.state;
+      await firebase.analytics().setDebugModeEnabled(enabled);
+      this.setState({ inProgress: "none" });
+    } catch (err) {
+      this.setState({ inProgress: "none" });
+      showError(err);
+    }
+  }
+
   render() {
     const {
       inProgress,
@@ -213,7 +239,7 @@ export default class LogEventScreen extends React.Component<
       userId,
       userPropertiesKey,
       userProperties,
-      screenName
+      screenName,
     } = this.state;
     return (
       <ScrollView style={styles.container}>
@@ -230,7 +256,7 @@ export default class LogEventScreen extends React.Component<
           onPress={this.onPressEventName}
         />
         <ListSeparator label="Event parameters" />
-        {Object.keys(eventParams).map(key => (
+        {Object.keys(eventParams).map((key) => (
           <ListItem key={key} label={key} value={eventParams[key]} />
         ))}
         <Button
@@ -265,7 +291,7 @@ export default class LogEventScreen extends React.Component<
           value={`Set "${userPropertiesKey}"`}
           onPress={this.onPressUserProperties}
         />
-        {Object.keys(userProperties).map(key => (
+        {Object.keys(userProperties).map((key) => (
           <ListItem key={key} label={key} value={userProperties[key]} />
         ))}
         <Button
@@ -274,6 +300,30 @@ export default class LogEventScreen extends React.Component<
           onPress={this.onPressSetUserProperties}
           loading={inProgress === "setuserproperties"}
         />
+        <Button
+          style={styles.button}
+          label="Set Analytics Collection Enabled"
+          onPress={() => this.setAnalyticsCollectionEnabled(true)}
+          loading={inProgress === "setanalyticscollectionenabled"}
+        />
+        <Button
+          style={styles.button}
+          label="Set Analytics Collection Disabled"
+          onPress={() => this.setAnalyticsCollectionEnabled(false)}
+          loading={inProgress === "setanalyticscollectionenabled"}
+        />
+        <Button
+          style={styles.button}
+          label="Set Debug Mode Enabled"
+          onPress={() => this.setDebugModeEnabled(true)}
+          loading={inProgress === "setdebugmodeenabled"}
+        />
+        <Button
+          style={styles.button}
+          label="Set Debug Mode Disabled"
+          onPress={() => this.setDebugModeEnabled(false)}
+          loading={inProgress === "setdebugmodeenabled"}
+        />
       </ScrollView>
     );
   }
@@ -281,10 +331,10 @@ export default class LogEventScreen extends React.Component<
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   button: {
     margin: Margins.regular,
-    marginBottom: 0
-  }
+    marginBottom: 0,
+  },
 });

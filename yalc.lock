@@ -6,7 +6,16 @@
       "file": true
     },
     "expo-firebase-analytics": {
-      "signature": "8517b8c51308ddbf81f62cea2fe9a3f1",
+      "signature": "1580c2352c99393bae5a9c079c8b8fc6",
+      "file": true,
+      "replaced": "^2.1.2"
+    },
+    "expo-firebase-polyfill": {
+      "signature": "64b69f615c1d5c769413b06d5ff498a1",
+      "file": true
+    },
+    "expo-firebase-recaptcha": {
+      "signature": "b119db064b7c582cf50d3b0cf4acc45b",
       "file": true
     }
   }

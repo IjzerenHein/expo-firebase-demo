@@ -12,6 +12,7 @@ export default class HomeScreen extends React.Component<PropsType> {
   _authListener: any;
 
   onAuthStateChanged = user => {
+    console.log("AuthUserChanged: ", user);
     this.forceUpdate();
   };
 
