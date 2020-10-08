@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "192261076942",
+    "firebase_url": "https://expo-firebase-demo.firebaseio.com",
+    "project_id": "expo-firebase-demo",
+    "storage_bucket": "expo-firebase-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:192261076942:android:e0cf6cbfa6dc8ca8359d9f",
+        "android_client_info": {
+          "package_name": "nl.ijzerenhein.expofirebasedemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "192261076942-3e612e3e9607pidjb9hsj892hjv07a6q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJbg5UQ2pH3lJJC7dwwzMBCWC8YWaLnNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "192261076942-3e612e3e9607pidjb9hsj892hjv07a6q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "192261076942-h3ic7gadeuh17qqk79qi6k572vsqeiq7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "host.exp.Exponent"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
