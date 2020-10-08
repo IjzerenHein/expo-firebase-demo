@@ -2810,22 +2810,24 @@ expo-file-system@~8.1.0:
   dependencies:
     uuid "^3.4.0"
 
-"expo-firebase-analytics@file:.yalc/expo-firebase-analytics":
-  version "2.1.2-c7af04c9"
+expo-firebase-analytics@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/expo-firebase-analytics/-/expo-firebase-analytics-2.5.0.tgz#67d19c7b6d4cc69a02de42af2c6708c3781d5258"
+  integrity sha512-NfY2sDuOCuLYp04Dl+/SjWgP7DcavNKpVKee5Pthfszt/peg/x69Lbkw9cy6pb8S2k3aZJnS4+VKaY571SoXEQ==
   dependencies:
-    expo-firebase-core "~1.0.0"
+    expo-firebase-core "~1.2.0"
 
-expo-firebase-core@~1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/expo-firebase-core/-/expo-firebase-core-1.0.0.tgz#fb97e43cae68545ddb178adbb93a91c07973ef60"
-  integrity sha512-wXEZrB3a1gH2LAmOK4tEtqtpxFTnClhnSReTNRkAkZYoRaScp+Cwn8jLz1nCqk1bXQYLFDBIqbAkPKw07xBbQg==
+expo-firebase-core@~1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/expo-firebase-core/-/expo-firebase-core-1.2.0.tgz#1f41d777cb04e19f495d27491b1596bdeb233f95"
+  integrity sha512-ojqiJLlH5BXQsrElPOtYsO0tHR2333mRDxV625Y0NQyjFBF17NQxlmCCkyh2uGO94LgcZTfB13SMiNHOe9RcZQ==
 
-expo-firebase-recaptcha@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/expo-firebase-recaptcha/-/expo-firebase-recaptcha-1.1.0.tgz#014707c8f8c9e6d033b08e87457270d1c3b6ffc0"
-  integrity sha512-w21IwPNwx1UptyCOSJuLbvmeOJQuT4KdW2AVH34QbprDwP1n5aDIquyp3W+YJskUgyheprbRwLRLSNyB8A/+JA==
+expo-firebase-recaptcha@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/expo-firebase-recaptcha/-/expo-firebase-recaptcha-1.2.0.tgz#07518968d42420f1352090df9fded4b03768e297"
+  integrity sha512-GeOXoJq9gdnl5hPidU+HFlifNJkzIfnRLU+qspdkLEdrU7DImrNuFleHt93iT9TXa+NyL+XtgTnSlVx91kXuxA==
   dependencies:
-    expo-firebase-core "~1.0.0"
+    expo-firebase-core "~1.2.0"
 
 expo-font@~8.1.0:
   version "8.1.1"
