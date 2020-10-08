@@ -10,4 +10,5 @@ export interface TodoItem {
   text: string;
   finished: boolean;
   createdAt: any;
+  location?: any;
 }

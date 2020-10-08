@@ -5,13 +5,14 @@ import {
   Button,
   Colors,
   Rounding,
-  ModalHeader
+  ModalHeader,
 } from "../../components";
 import { firebase } from "../../firebase";
 import config from "../../config";
 import * as Facebook from "expo-facebook";
 import * as Google from "expo-google-app-auth";
 import * as AppleAuthentication from "expo-apple-authentication";
+import GoogleSignInButton from "./GoogleSignInButton";
 
 type PropsType = {
   navigation: any;
@@ -23,7 +24,7 @@ type StateType = {
 
 export default class SignInScreen extends React.Component<PropsType> {
   state = {
-    inProgress: "none"
+    inProgress: "none",
   };
 
   /**
@@ -155,10 +156,14 @@ export default class SignInScreen extends React.Component<PropsType> {
           style={styles.button}
           color={Colors.googleRed}
           //textColor={Colors.black}
-          label={"Sign in with Google"}
+          label={"Sign in with Google (google-app-auth)"}
           loading={inProgress === "googleSignin"}
           disabled={inProgress !== "none"}
           onPress={this.onPressGoogle}
+        />
+        <GoogleSignInButton
+          style={styles.button}
+          label={"Sign in with Google (auth-session)"}
         />
         <Button
           style={styles.button}
@@ -180,9 +185,7 @@ export default class SignInScreen extends React.Component<PropsType> {
             style={styles.appleButton}
             onPress={this.onPressApple}
           />
-        ) : (
-          undefined
-        )}
+        ) : undefined}
         {/*<Button
           style={styles.button}
           color={Colors.white}
