@@ -1,12 +1,13 @@
 import * as React from "react";
-import { StyleSheet, ScrollView, AsyncStorage } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import {
   ListItem,
   ListSeparator,
   Button,
   Margins,
   showError,
-  ModalHeader
+  ModalHeader,
 } from "../../components";
 import { firebase } from "../../firebase";
 import * as FirebaseAuth from "./recaptcha";
@@ -29,7 +30,7 @@ export default class SignInPhoneNumberScreen extends React.Component<
     inProgress: "none",
     phoneNumber: "",
     verificationId: "",
-    verificationCode: ""
+    verificationCode: "",
   };
   recaptchaVerifier: FirebaseAuth.IFirebaseAuthApplicationVerifier;
 
@@ -39,18 +40,18 @@ export default class SignInPhoneNumberScreen extends React.Component<
     );
     if (verificationId) {
       this.setState({
-        verificationId
+        verificationId,
       });
     }
   }
 
   onChangePhoneNumber = async (phoneNumber: string) => {
     this.setState({
-      phoneNumber
+      phoneNumber,
     });
   };
 
-  onSetRecaptchaVerifier = recaptchaVerifier => {
+  onSetRecaptchaVerifier = (recaptchaVerifier) => {
     this.recaptchaVerifier = recaptchaVerifier;
   };
 
@@ -66,7 +67,7 @@ export default class SignInPhoneNumberScreen extends React.Component<
       console.log("verificationId: ", verificationId);
       this.setState({
         inProgress: "none",
-        verificationId
+        verificationId,
       });
       AsyncStorage.setItem("firebasePhoneAuthVerificationId", verificationId);
     } catch (err) {
@@ -77,7 +78,7 @@ export default class SignInPhoneNumberScreen extends React.Component<
 
   onChangeVerificationCode = async (verificationCode: string) => {
     this.setState({
-      verificationCode
+      verificationCode,
     });
   };
 
@@ -113,7 +114,7 @@ export default class SignInPhoneNumberScreen extends React.Component<
       phoneNumber,
       inProgress,
       verificationId,
-      verificationCode
+      verificationCode,
     } = this.state;
     return (
       <ScrollView style={styles.container}>
@@ -126,7 +127,7 @@ export default class SignInPhoneNumberScreen extends React.Component<
             autoFocus: true,
             autoCompleteType: "tel",
             keyboardType: "phone-pad",
-            textContentType: "telephoneNumber"
+            textContentType: "telephoneNumber",
           }}
           onChangeValue={this.onChangePhoneNumber}
         />
@@ -149,7 +150,7 @@ export default class SignInPhoneNumberScreen extends React.Component<
               value={verificationCode}
               editable
               textInput={{
-                autoFocus: true
+                autoFocus: true,
               }}
               onChangeValue={this.onChangeVerificationCode}
             />
@@ -160,9 +161,7 @@ export default class SignInPhoneNumberScreen extends React.Component<
               loading={inProgress === "confirmVerificationCode"}
             />
           </React.Fragment>
-        ) : (
-          undefined
-        )}
+        ) : undefined}
       </ScrollView>
     );
   }
@@ -170,9 +169,9 @@ export default class SignInPhoneNumberScreen extends React.Component<
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   button: {
-    margin: Margins.regular
-  }
+    margin: Margins.regular,
+  },
 });
