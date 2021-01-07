@@ -94,7 +94,7 @@ export async function test({ describe, beforeAll, afterAll, it, expect }) {
         expect(error).toBeNull();
       });
     });
-    describe("setUserProperty()", async () => {
+    /* describe("setUserProperty()", async () => {
       it(`runs`, async () => {
         let error = null;
         try {
@@ -104,7 +104,7 @@ export async function test({ describe, beforeAll, afterAll, it, expect }) {
         }
         expect(error).toBeNull();
       });
-    });
+    }); */
     describe("setUserProperties()", async () => {
       it(`runs`, async () => {
         let error = null;
