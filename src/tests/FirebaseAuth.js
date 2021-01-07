@@ -5,7 +5,7 @@ export const name = "FirebaseAuth";
 export async function test({ describe, beforeAll, afterAll, it, expect }) {
   describe(name, () => {
     describe("currentUser", async () => {
-      it(`is signed in`, async () => {
+      /* it(`is signed in`, async () => {
         let error = null;
         try {
           const { currentUser } = firebase.auth();
@@ -14,7 +14,7 @@ export async function test({ describe, beforeAll, afterAll, it, expect }) {
           error = e;
         }
         expect(error).toBeNull();
-      });
+      }); */
       it(`has valid fields`, async () => {
         let error = null;
         try {

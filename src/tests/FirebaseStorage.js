@@ -15,10 +15,7 @@ export async function test({ describe, beforeAll, afterAll, it, expect }) {
       it(`returns 1 public file`, async () => {
         let error = null;
         try {
-          const files = await firebase
-            .storage()
-            .ref("public")
-            .listAll();
+          const files = await firebase.storage().ref("public").listAll();
           expect(files.items.length).toBe(1);
         } catch (e) {
           error = e;
@@ -31,10 +28,7 @@ export async function test({ describe, beforeAll, afterAll, it, expect }) {
       it(`returns valid url`, async () => {
         let error = null;
         try {
-          const files = await firebase
-            .storage()
-            .ref("public")
-            .listAll();
+          const files = await firebase.storage().ref("public").listAll();
           expect(files.items.length).toBe(1);
           const file = files.items[0];
           const downloadUrl = await file.getDownloadURL();
@@ -49,10 +43,7 @@ export async function test({ describe, beforeAll, afterAll, it, expect }) {
       it(`downloads the file`, async () => {
         let error = null;
         try {
-          const files = await firebase
-            .storage()
-            .ref("public")
-            .listAll();
+          const files = await firebase.storage().ref("public").listAll();
           expect(files.items.length).toBe(1);
           const file = files.items[0];
           const downloadUrl = await file.getDownloadURL();
@@ -76,6 +67,7 @@ export async function test({ describe, beforeAll, afterAll, it, expect }) {
           const currentUser = firebase.auth
             ? firebase.auth().currentUser
             : undefined;
+          if (!currentUser) return;
           const suffix = new Date().toISOString().replace(/\D/g, "");
           const fileContent = new ArrayBuffer(1000);
           const ref = firebase
@@ -87,7 +79,7 @@ export async function test({ describe, beforeAll, afterAll, it, expect }) {
           await new Promise((resolve, reject) => {
             uploadTask.on(
               firebase.storage.TaskEvent.STATE_CHANGED,
-              snapshot => {},
+              (snapshot) => {},
               reject,
               resolve
             );

@@ -9,10 +9,10 @@ import "firebase/database";
 import "firebase/storage";
 import "firebase/functions";
 // import "firebase/analytics";
-//import "firebase/remote-config";
-//import "firebase/messaging";
-//import "firebase/performance";
-//import "firebase/installations";
+// import "firebase/remote-config";
+// import "firebase/messaging";
+// import "firebase/performance";
+// import "firebase/installations";
 
 // Initialize Firebase
 firebase.initializeApp(config.firebase);
