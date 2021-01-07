@@ -20,6 +20,6 @@ exports.echoMessage = functions.https.onCall(data => {
     throw new ArgumentError(`Hi 👋, you did not specify a message`);
   }
   return {
-    message: `Hi 👋, you said: ${message}`
+    message: `Hi 👋, you said: ${message}`,
   };
 });

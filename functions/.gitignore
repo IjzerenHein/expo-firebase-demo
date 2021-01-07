@@ -2,7 +2,18 @@
 **/*.js
 **/*.js.map
 
+# Logging
+firebase-debug.log
+ui-debug.log
+
+# Except the ESLint config file
+!.eslintrc.js
+
 # Typescript v1 declaration files
 typings/
 
+# Node.js dependency directory
 node_modules/
+
+# Local environment secrets
+.runtimeconfig.json
