@@ -22,7 +22,7 @@
     "expo-google-app-auth": "^8.0.0",
     "expo-random": "^10.0.0",
     "expo-web-browser": "~8.6.0",
-    "firebase": "7.9.0",
+    "firebase": "^8.2.1",
     "firestorter": "^3.0.1",
     "immutable": "^4.0.0-rc.12",
     "jasmine-core": "^3.5.0",
