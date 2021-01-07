@@ -7,7 +7,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 import "firebase/functions";
-//import "firebase/analytics";
+import "firebase/analytics";
 //import "firebase/remote-config";
 //import "firebase/messaging";
 //import "firebase/performance";
@@ -16,7 +16,7 @@ import "firebase/functions";
 firebase.initializeApp(config.firebase);
 
 initFirestorter({
-  firebase
+  firebase,
 });
 
 export { firebase };
