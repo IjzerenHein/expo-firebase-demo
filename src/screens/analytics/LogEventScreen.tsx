@@ -13,16 +13,18 @@ import customTrackerFirebase from "./firebase";
 type PropsType = {
   navigation: any;
 };
+type EventParams = {
+  [key: string]: string | number | boolean | EventParams | EventParams[];
+};
+type UserProps = {
+  [key: string]: string | number | boolean;
+};
 type StateType = {
   eventName: string;
-  eventParams: {
-    [key: string]: string | number | boolean;
-  };
+  eventParams: EventParams;
   userId: string;
   userPropertiesKey: string;
-  userProperties: {
-    [key: string]: string | number | boolean;
-  };
+  userProperties: UserProps;
   screenName: string;
   inProgress:
     | "none"
@@ -35,7 +37,7 @@ type StateType = {
   firebase: any;
 };
 
-const EVENTS = {
+const EVENTS: { [name: string]: EventParams } = {
   add_to_cart: {
     title: "Expo Analytics",
     currency: "USD",
@@ -76,9 +78,36 @@ const EVENTS = {
     content_type: "article",
     content_id: "article-8704",
   },
+  view_item: {
+    currency: "USD",
+    value: 9.99,
+    items: [
+      {
+        // pr1
+        id: "172838232", //id172838232
+        name: "fooby", // nmfooby
+        quantity: 2, // qt2
+        location_id: "warehouse", // lowarehouse
+        brand: "onfire", // bronfire
+        variant: "loki", // valoki
+        list: "yuuuuupp", // lnyuuuuupp
+        list_id: "ABC123", // k0list_id~v0ABC123
+        list_name: "RelatedProducts", //  ??
+        category: "pants", // capants
+        category2: "pants", // k1category2~v1pants
+        category3: "pants",
+        category4: "pants",
+        category5: "pants",
+      },
+      {
+        // pr2
+        id: "98765", //id98765
+      },
+    ],
+  },
 };
 
-const USERPROPS = {
+const USERPROPS: { [name: string]: UserProps } = {
   a: {
     age: 30,
     sex: "male",
@@ -96,8 +125,7 @@ export default class LogEventScreen extends React.Component<
   PropsType,
   StateType
 > {
-  // @ts-ignore
-  state = {
+  state: StateType = {
     eventName: "add_to_cart",
     eventParams: EVENTS.add_to_cart,
     userId: "",
@@ -246,7 +274,6 @@ export default class LogEventScreen extends React.Component<
         <ListItem
           label="Custom Tracker"
           onPress={this.onPressCustomTracker}
-          // @ts-ignore
           value={firebase === customTrackerFirebase}
         />
         <ListSeparator label="Press 'Event name' to switch events" />
@@ -256,14 +283,20 @@ export default class LogEventScreen extends React.Component<
           onPress={this.onPressEventName}
         />
         <ListSeparator label="Event parameters" />
-        {Object.keys(eventParams).map((key) => (
-          <ListItem key={key} label={key} value={eventParams[key]} />
-        ))}
+        {Object.keys(eventParams).map((key) => {
+          const value =
+            typeof eventParams[key] !== "number" &&
+            typeof eventParams[key] !== "boolean"
+              ? JSON.stringify(eventParams[key])
+              : eventParams[key];
+          // @ts-ignore
+          return <ListItem key={key} label={key} value={value} />;
+        })}
         <Button
           style={styles.button}
           label="Log event"
           onPress={this.onPressLogEvent}
-          loading={inProgress === "logEvent"}
+          loading={inProgress === "logevent"}
         />
         <ListSeparator label="Press 'Screen Name' to select a screen" />
         <ListItem

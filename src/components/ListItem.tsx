@@ -6,7 +6,7 @@ import { Switch } from "./Switch";
 
 type PropsType = {
   label: string;
-  value?: string | boolean;
+  value?: string | boolean | number;
   valueColor?: string;
   onPress?: () => any;
   disabled?: boolean;
@@ -21,23 +21,24 @@ type StateType = {
   inputValueSubmitted: boolean;
 };
 
-export class ListItem extends React.Component<PropsType> {
-  state = {
+export class ListItem extends React.Component<PropsType, StateType> {
+  state: StateType = {
     isFocused: false,
-    inputValue: undefined
+    inputValue: undefined,
+    inputValueSubmitted: false,
   };
 
   onChangeText = (text: string) => {
     this.setState({
       inputValue: text,
-      inputValueSubmitted: false
+      inputValueSubmitted: false,
     });
   };
 
   onFocusInput = () => {
     this.setState({
-      inputValue: this.props.value,
-      isFocused: true
+      inputValue: String(this.props.value),
+      isFocused: true,
     });
   };
 
@@ -46,7 +47,7 @@ export class ListItem extends React.Component<PropsType> {
     const { inputValue } = this.state;
     if (inputValue === undefined) {
       this.setState({
-        isFocused: false
+        isFocused: false,
       });
       return;
     }
@@ -54,7 +55,7 @@ export class ListItem extends React.Component<PropsType> {
       await onChangeValue(inputValue);
     }
     this.setState({
-      isFocused: false
+      isFocused: false,
     });
   };
 
@@ -67,7 +68,7 @@ export class ListItem extends React.Component<PropsType> {
       onPress,
       disabled,
       accessory,
-      textInput
+      textInput,
     } = this.props;
     const { inputValue, isFocused } = this.state;
     const resolvedValue = isFocused ? inputValue : value;
@@ -81,7 +82,7 @@ export class ListItem extends React.Component<PropsType> {
               style={styles.textInput}
               placeholder={label}
               {...textInput}
-              value={resolvedValue}
+              value={String(resolvedValue)}
               onFocus={this.onFocusInput}
               onChangeText={this.onChangeText}
               onBlur={this.onBlurInput}
@@ -101,9 +102,7 @@ export class ListItem extends React.Component<PropsType> {
                 {value}
               </Heading2>
             )
-          ) : (
-            undefined
-          )}
+          ) : undefined}
           {accessory}
         </View>
       </TouchableOpacity>
@@ -120,20 +119,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Margins.regular,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.gray
+    borderBottomColor: Colors.gray,
   },
   disabled: {
-    opacity: 0.41
+    opacity: 0.41,
   },
   label: {
-    marginRight: Margins.small
+    marginRight: Margins.small,
   },
   value: {
     textAlign: "right",
-    flex: 1
+    flex: 1,
   },
   textInput: {
     flex: 1,
-    fontSize: 17
-  }
+    fontSize: 17,
+  },
 });
