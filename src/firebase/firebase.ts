@@ -1,5 +1,5 @@
 import config from "../config";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import { initFirestorter } from "firestorter";
 
 // Add the Firebase products that you want to use
